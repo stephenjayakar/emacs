@@ -1,0 +1,10 @@
+tramp
+transient
+projectile*
+network*
+garbage.el
+elpa
+auto*
+ac*
+.cache
+.lsp*
