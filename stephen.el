@@ -51,6 +51,13 @@
   (auto-complete-mode 1))
 (add-hook 'go-mode-hook 'auto-complete-for-go)
 (with-eval-after-load 'go-mode
-   (require 'go-autocomplete))
+  (require 'go-autocomplete))
+
+(add-hook 'term-mode-hook
+   (lambda ()
+     ;; C-x is the prefix command, rather than C-c
+     (term-set-escape-char ?\C-x)
+     (define-key term-raw-map "\M-y" 'yank-pop)
+     (define-key term-raw-map "\M-w" 'kill-ring-save)))
 
 (setq custom-file "~/.emacs.d/garbage.el")
