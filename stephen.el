@@ -59,5 +59,12 @@
      (term-set-escape-char ?\C-x)
      (define-key term-raw-map "\M-y" 'yank-pop)
      (define-key term-raw-map "\M-w" 'kill-ring-save)))
+(exec-path-from-shell-initialize)
+
+(with-eval-after-load 'flycheck
+  (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
+
+(with-eval-after-load 'rust-mode
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 (setq custom-file "~/.emacs.d/garbage.el")
