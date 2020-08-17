@@ -34,6 +34,7 @@
 (global-set-key (kbd "C-x C-j") 'previous-buffer)
 (global-set-key (kbd "C-x C-l") 'next-buffer)
 (global-set-key (kbd "C-x f") 'fzf)
+(global-set-key (kbd "C-x l") 'goto-line)
 
 ;; END Keybinds
 
