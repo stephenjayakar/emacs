@@ -7,7 +7,7 @@
 
 (setq-default c-basic-offset 2)
 ;; Whitespace
-(setq show-trailing-whitespace t)
+(setq-default show-trailing-whitespace t)
 
 
 (custom-set-variables

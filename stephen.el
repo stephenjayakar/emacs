@@ -17,32 +17,23 @@
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 ;; End Projectile Config
 
-;; Disabling backup files
-(setq make-backup-files nil)
+;; Moving backup files out of working directory
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 
 ;; UI
 (load-file "~/.emacs.d/stephen-ui.el")
 
 (global-undo-tree-mode)
 
-;; Keybinds
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "C-j") 'newline-and-indent)
-(global-set-key (kbd "C-x u") 'undo-tree-undo)
-(global-set-key (kbd "M-h") 'backward-kill-word)
-(global-set-key (kbd "C-c C-c") 'copy-region-to-clipboard)
-(global-set-key (kbd "C-x C-j") 'previous-buffer)
-(global-set-key (kbd "C-x C-l") 'next-buffer)
-(global-set-key (kbd "C-x f") 'fzf)
-(global-set-key (kbd "C-x l") 'goto-line)
-
-;; END Keybinds
-
 ;; LSP MODE
 (setq lsp-keymap-prefix "C-x C-k")
 (require 'lsp-mode)
 (add-hook 'web-mode-hook #'lsp)
 (add-hook '-mode-hook #'lsp)
+(setq lsp-rust-server 'rust-analyzer)
 
 (company-mode +1)
 (add-hook 'after-init-hook 'global-company-mode)
@@ -69,3 +60,20 @@
   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 (setq custom-file "~/.emacs.d/garbage.el")
+
+;; Keybinds
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "C-j") 'newline-and-indent)
+(global-set-key (kbd "C-x u") 'undo-tree-undo)
+(global-set-key (kbd "M-h") 'backward-kill-word)
+(global-set-key (kbd "C-c C-c") 'copy-region-to-clipboard)
+(global-set-key (kbd "C-x C-j") 'previous-buffer)
+(global-set-key (kbd "C-x C-l") 'next-buffer)
+(global-set-key (kbd "C-x f") 'fzf)
+(global-set-key (kbd "C-x l") 'goto-line)
+(global-set-key (kbd "C-x C-r") 'revert-buffer)
+(global-set-key (kbd "C-x C-e") 'eval-buffer)
+(global-set-key (kbd "C-c RET") 'yafolding-toggle-element)
+;; (define-key yafolding-mode-map (kbd "C-c <C-RET>") 'yafolding-toggle-element)
+;; END Keybinds
+
