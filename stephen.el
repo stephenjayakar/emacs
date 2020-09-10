@@ -58,6 +58,8 @@
 
 (with-eval-after-load 'rust-mode
   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+(add-hook 'rust-mode 'flymake-mode)
+(add-hook 'rust-mode 'lsp)
 
 (setq custom-file "~/.emacs.d/garbage.el")
 
