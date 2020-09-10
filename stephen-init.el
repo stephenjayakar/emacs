@@ -7,11 +7,11 @@
 
 (require 'package)
 (package-initialize)
-(require 'flycheck)
 
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(require 'flycheck)
 
 ;; Tide config
 (defun setup-tide-mode ()

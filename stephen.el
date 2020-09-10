@@ -64,7 +64,6 @@
 (setq custom-file "~/.emacs.d/garbage.el")
 
 ;; Keybinds
-(global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "C-j") 'newline-and-indent)
 (global-set-key (kbd "C-x u") 'undo-tree-undo)
 (global-set-key (kbd "M-h") 'backward-kill-word)
