@@ -1,4 +1,38 @@
-(load-file "~/.emacs.d/stephen-init.el")
+;; Fixing path to mirror the one of my zsh shell
+(let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
+  (setenv "PATH" path)
+  (setq exec-path
+        (append
+         (split-string-and-unquote path ":")
+         exec-path)))
+
+(require 'package)
+(package-initialize)
+
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;  PACKAGES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package flycheck)
+(use-package lsp-mode
+  :ensure t
+  :commands (lsp lsp-deferred)
+  :hook (go-mode . lsp-deferred))
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
+(use-package company
+  :ensure t
+  :config
+  ;; Optionally enable completion-as-you-type behavior.
+  (setq company-idle-delay 0)
+  (setq company-minimum-prefix-length 1))
+(use-package company-lsp)
+(use-package tide)
+(use-package web-mode)
 
 ;; Custom Functions
 (defun copy-region-to-clipboard-mac ()
@@ -18,13 +52,9 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-;; UI
-(load-file "~/.emacs.d/stephen-ui.el")
-
 (global-undo-tree-mode)
 
 ;; LSP MODE
-
 (setq lsp-keymap-prefix "C-x C-k")
 (add-hook 'web-mode-hook #'lsp)
 (add-hook '-mode-hook #'lsp)
@@ -66,6 +96,32 @@
 (global-set-key (kbd "C-x C-r") 'revert-buffer)
 (global-set-key (kbd "C-x C-e") 'eval-buffer)
 (global-set-key (kbd "C-c RET") 'yafolding-toggle-element)
-;; (define-key yafolding-mode-map (kbd "C-c <C-RET>") 'yafolding-toggle-element)
-;; END Keybinds
 
+;; UI
+
+;; Display line numbers
+(global-linum-mode)
+(setq linum-format "%d ")
+
+;; Type 'y' for yes and 'n' for no
+(fset 'yes-or-no-p 'y-or-n-p)
+
+(setq-default c-basic-offset 2)
+;; Whitespace
+(setq-default show-trailing-whitespace t)
+
+;; Loading my custom theme, and telling Emacs it's safe.
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("0060308491490f94b8ce88b1c61a3a4d0ca205b7ee83ea3ac872d54045b135ed" default)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+(load-theme 'fuck)
