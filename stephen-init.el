@@ -1,6 +1,6 @@
 (let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
   (setenv "PATH" path)
-  (setq exec-path 
+  (setq exec-path
         (append
          (split-string-and-unquote path ":")
          exec-path)))
@@ -11,7 +11,24 @@
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(require 'flycheck)
+
+(use-package flycheck)
+(use-package lsp-mode
+  :ensure t
+  :commands (lsp lsp-deferred)
+  :hook (go-mode . lsp-deferred))
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
+(use-package company
+  :ensure t
+  :config
+  ;; Optionally enable completion-as-you-type behavior.
+  (setq company-idle-delay 0)
+  (setq company-minimum-prefix-length 1))
+(use-package company-lsp
+  :ensure t
+  )
 
 ;; Tide config
 (defun setup-tide-mode ()

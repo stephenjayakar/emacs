@@ -1,12 +1,7 @@
 (load-file "~/.emacs.d/stephen-init.el")
-;; End Init
-
-;; Custom macros
-;(fset 'require-to-import
-;      (kmacro-lambda-form [?\C-\[ ?d ?i ?m ?p ?o ?r ?t ?\C-s ?r ?e ?q ?u ?i ?r ?e ?\C-m ?\C-\[ ?\C-? ?\C-? ?\C-? ?f ?r ?o ?m ?\C-d ?  ?\C-s ?\) ?\C-m ?\C-b ?\C-k ?\; ?\C-s ?r ?e ?q ?u ?i ?r ?e ?\C-m ?\C-a] 0 "%d"))
 
 ;; Custom Functions
-(defun copy-region-to-clipboard ()
+(defun copy-region-to-clipboard-mac ()
   "Copies the selected region to system clipboard"
   (interactive)
   (shell-command-on-region (region-beginning) (region-end) "pbcopy"))
@@ -29,21 +24,22 @@
 (global-undo-tree-mode)
 
 ;; LSP MODE
+
 (setq lsp-keymap-prefix "C-x C-k")
-(require 'lsp-mode)
 (add-hook 'web-mode-hook #'lsp)
 (add-hook '-mode-hook #'lsp)
 (setq lsp-rust-server 'rust-analyzer)
 
-(company-mode +1)
-(add-hook 'after-init-hook 'global-company-mode)
-(ivy-mode 1)
+;; Set up before-save hooks to format buffer and add/delete imports.
+;; Make sure you don't have other gofmt/goimports hooks enabled.
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
-(defun auto-complete-for-go ()
-  (auto-complete-mode 1))
-(add-hook 'go-mode-hook 'auto-complete-for-go)
-(with-eval-after-load 'go-mode
-  (require 'go-autocomplete))
+;; END LSP MODE
+
+(ivy-mode 1)
 
 (add-hook 'term-mode-hook
    (lambda ()
@@ -55,11 +51,6 @@
 
 (with-eval-after-load 'flycheck
   (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
-
-(with-eval-after-load 'rust-mode
-  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
-(add-hook 'rust-mode 'flymake-mode)
-(add-hook 'rust-mode 'lsp)
 
 (setq custom-file "~/.emacs.d/garbage.el")
 
