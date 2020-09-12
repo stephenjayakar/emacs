@@ -58,6 +58,9 @@
 
 (use-package undo-tree
   :ensure t
+  :bind (
+    ("C-x u" . undo-tree-undo)
+  )
   :config (
     global-undo-tree-mode
   )
@@ -83,8 +86,18 @@
   :ensure t
 )
 
+(use-package yafolding
+  :ensure t
+  :bind (
+    ("C-c RET" . yafolding-toggle-element)
+  )
+)
+
 (use-package fzf
   :ensure t
+  :bind (
+    ("C-x f" . fzf-git)
+  )
 )
 
 (use-package projectile
@@ -116,17 +129,14 @@
 ;;;  KEYBINDS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (global-set-key (kbd "C-j") 'newline-and-indent)
-(global-set-key (kbd "C-x u") 'undo-tree-undo)
 (global-set-key (kbd "M-h") 'backward-kill-word)
 ;; TODO: somehow only bind this on Mac OSX
-(global-set-key (kbd "C-c C-c") 'copy-region-to-clipboard)
+(global-set-key (kbd "C-c C-c") 'copy-region-to-clipboard-mac)
 (global-set-key (kbd "C-x C-j") 'previous-buffer)
 (global-set-key (kbd "C-x C-l") 'next-buffer)
-(global-set-key (kbd "C-x f") 'fzf)
 (global-set-key (kbd "C-x l") 'goto-line)
 (global-set-key (kbd "C-x C-r") 'revert-buffer)
 (global-set-key (kbd "C-x C-e") 'eval-buffer)
-(global-set-key (kbd "C-c RET") 'yafolding-toggle-element)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  UI ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -134,6 +144,11 @@
 ;; Display line numbers
 (global-linum-mode)
 (setq linum-format "%d ")
+
+;; disable dumb stuff
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
 
 ;; Type 'y' for yes and 'n' for no
 (fset 'yes-or-no-p 'y-or-n-p)
