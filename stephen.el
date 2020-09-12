@@ -5,6 +5,8 @@
         (append
          (split-string-and-unquote path ":")
          exec-path)))
+;; setting emacs garbage collection threshold to a modern device level
+(setq gc-cons-threshold 100000000)
 
 ;; package setup
 (require 'package)
