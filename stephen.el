@@ -1,3 +1,5 @@
+(setq debug-on-error 't)
+
 ;; Fixing path to mirror the one of my zsh shell
 (let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
   (setenv "PATH" path)
@@ -36,7 +38,7 @@
       (company-mode +1)
     )
   :hook (web-mode . setup-tide-mode)
-  :bind (
+  :bind (:map tide-mode-map
     ("C-c t" . tide-jump-to-definition)
   )
 )
@@ -68,6 +70,10 @@
     setq lsp-rust-server 'rust-analyzer
          lsp-auto-guess-root nil
   )
+  :bind (:map lsp-mode-map
+    ("C-c t" . lsp-find-definition)
+  )
+
 )
 
 (use-package lsp-ui
