@@ -3,10 +3,9 @@
 
 (custom-theme-set-faces
  'fuck
- '(default ((t (:inherit nil :extend nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" :family "default"))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "default" :family "Fira Code"))))
  '(cursor ((t (:background "#ffffaf"))))
  '(fixed-pitch ((t (:family "Monospace"))))
- '(variable-pitch ((((type w32)) (:foundry "outline" :family "Arial")) (t (:family "Sans Serif"))))
  '(escape-glyph ((t (:foreground "#87af87"))))
  '(homoglyph ((t (:foreground "#ffaf00"))))
  '(minibuffer-prompt ((t (:weight bold :foreground "#afaf00" :background "#1c1c1c"))))
@@ -21,7 +20,7 @@
  '(font-lock-constant-face ((t (:foreground "#d787af"))))
  '(font-lock-doc-face ((t (:inherit (font-lock-string-face)))))
  '(font-lock-function-name-face ((t (:foreground "#ffaf00"))))
- '(font-lock-keyword-face ((t (:foreground "color-196"))))
+ '(font-lock-keyword-face ((t (:foreground "systemRedColor"))))
  '(font-lock-negation-char-face ((t nil)))
  '(font-lock-preprocessor-face ((t (:inherit (font-lock-builtin-face)))))
  '(font-lock-regexp-grouping-backslash ((t (:inherit (bold)))))
@@ -46,9 +45,6 @@
  '(lazy-highlight ((t (:foreground "#000000" :background "#ffaf00"))))
  '(match ((t (:foreground "#262626" :background "#87afaf"))))
  '(next-error ((t (:inherit (region)))))
- '(query-replace ((t (:inherit (isearch)))))
- '(web-mode-html-tag-face ((t (:foreground "brightgreen"))))
- '(web-mode-html-attr-name-face ((t (:foreground "color-214"))))
- '(web-mode-html-tag-bracket-face ((t (:foreground "color-86")))))
+ '(query-replace ((t (:inherit (isearch))))))
 
 (provide-theme 'fuck)

@@ -25,33 +25,16 @@
   :ensure t
 )
 
-(use-package tide
-  :ensure t
-  :config
-    (defun setup-tide-mode ()
-      (interactive)
-      (tide-setup)
-      (flycheck-mode +1)
-      (setq flycheck-check-syntax-automatically '(save mode-enabled))
-      (eldoc-mode +1)
-      (tide-hl-identifier-mode +1)
-      (company-mode +1)
-    )
-  :hook (web-mode . setup-tide-mode)
-  :bind (:map tide-mode-map
-    ("C-c t" . tide-jump-to-definition)
-  )
-)
-
 (use-package web-mode
   :ensure t
   :config
     (setq web-mode-markup-indent-offset 2)
     (setq web-mode-code-indent-offset 2)
     (setq web-mode-css-indent-offset 2)
-    (setq web-mode-enable-auto-indentation nil)
     (add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
 )
 
 (use-package rust-mode
@@ -65,7 +48,10 @@
 (use-package lsp-mode
   :ensure t
   :commands (lsp lsp-deferred)
-  :hook (go-mode . lsp-deferred)
+  :hook
+    (go-mode . lsp-deferred)
+    (web-mode . lsp-deferred)
+    (rust-mode . lsp-deferred)
   :config (
     setq lsp-rust-server 'rust-analyzer
          lsp-auto-guess-root nil
@@ -73,7 +59,10 @@
   :bind (:map lsp-mode-map
     ("C-c t" . lsp-find-definition)
   )
+)
 
+(use-package dap-mode
+  :ensure t
 )
 
 (use-package lsp-ui
@@ -110,10 +99,9 @@
 
 (use-package company
   :ensure t
-  :config
-    ;; Optionally enable completion-as-you-type behavior.
-    (setq company-idle-delay 0)
-    (setq company-minimum-prefix-length 1)
+  :bind (
+    ("C-x a" . company-capf)
+  )
 )
 
 (use-package string-inflection
@@ -138,19 +126,20 @@
   :ensure t
   :config
     (projectile-mode +1)
+  :bind-keymap
+    ("C-c p" . projectile-command-map)
 )
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Configuring Built-in packages
 (setq js-indent-level 2)
+(add-hook 'python-mode-hook 'lsp)
 
 ;; Custom Functions
 (defun copy-region-to-clipboard-mac ()
   "Copies the selected region to system clipboard"
   (interactive)
   (shell-command-on-region (region-beginning) (region-end) "pbcopy"))
-
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 ;; Moving backup files out of working directory
 (setq backup-directory-alist
@@ -184,6 +173,7 @@
 ;; disable dumb stuff
 (menu-bar-mode -1)
 (tool-bar-mode -1)
+(scroll-bar-mode -1)
 
 ;; Type 'y' for yes and 'n' for no
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -192,18 +182,20 @@
 ;; Whitespace
 (setq-default show-trailing-whitespace t)
 
-;; Loading my custom theme, and telling Emacs it's safe.
+;; font and telling emacs my theme is safe and loading it
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("0060308491490f94b8ce88b1c61a3a4d0ca205b7ee83ea3ac872d54045b135ed" default)))
-(custom-set-faces
+   '("5e1f1e8effb6454f616a35fabcdaaa2438c2f506ac67d96a7811b529d70de7d3" default))
+ '(menu-bar-mode nil)
+ '(tool-bar-mode nil))
+; (custom-set-face
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ ;; '(default ((t (:inherit nil :extend nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width normal :foundry "nil" :family "Fira Code")))))
 (load-theme 'fuck)
