@@ -41,6 +41,10 @@
   :ensure t
 )
 
+(use-package elixir-mode
+  :ensure t
+)
+
 (use-package yaml-mode
   :ensure t
 )
@@ -122,6 +126,18 @@
   )
 )
 
+(use-package switch-window
+  :ensure t
+  :bind (
+    ("C-x o" . switch-window)
+  )
+  :config
+	(setq switch-window-multiple-frames t)
+	(setq switch-window-shortcut-style 'qwerty)
+	(setq switch-window-qwerty-shortcuts '("a" "s" "d" "f" "j" "k" "l" ";" "w" "e" "r" "u" "i" "o" "q" "t" "y" "p"))
+	(setq switch-window-increase 3)
+)
+
 (use-package projectile
   :ensure t
   :config
@@ -130,6 +146,8 @@
     ("C-c p" . projectile-command-map)
 )
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setq-default tab-width 4)
 
 ;; Configuring Built-in packages
 (setq js-indent-level 2)
