@@ -183,8 +183,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (global-set-key (kbd "C-j") 'newline-and-indent)
 (global-set-key (kbd "M-h") 'backward-kill-word)
-;; TODO: somehow only bind this on Mac OSX
-(global-set-key (kbd "C-c C-c") 'copy-region-to-clipboard-mac)
 (global-set-key (kbd "C-x C-j") 'previous-buffer)
 (global-set-key (kbd "C-x C-l") 'next-buffer)
 (global-set-key (kbd "C-x l") 'goto-line)
