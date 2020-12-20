@@ -16,8 +16,6 @@
 
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  PACKAGES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -138,6 +136,18 @@
 	(setq switch-window-increase 3)
 )
 
+(use-package ace-jump-mode
+  :ensure t
+  :bind (
+    ("C-c SPC" . ace-jump-word-mode)
+    ("C-c C-x SPC" . ace-jump-char-mode)
+  )
+)
+
+(use-package magit
+  :ensure t
+)
+
 (use-package projectile
   :ensure t
   :config
@@ -191,7 +201,7 @@
 ;; disable dumb stuff
 (menu-bar-mode -1)
 (tool-bar-mode -1)
-(scroll-bar-mode -1)
+;(scroll-bar-mode -1)
 
 ;; Type 'y' for yes and 'n' for no
 (fset 'yes-or-no-p 'y-or-n-p)
