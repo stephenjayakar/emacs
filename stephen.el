@@ -201,7 +201,7 @@
 ;; disable dumb stuff
 (menu-bar-mode -1)
 (tool-bar-mode -1)
-;(scroll-bar-mode -1)
+(scroll-bar-mode -1)
 
 ;; Type 'y' for yes and 'n' for no
 (fset 'yes-or-no-p 'y-or-n-p)
