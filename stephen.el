@@ -134,8 +134,9 @@
   :config
 	(setq switch-window-multiple-frames t)
 	(setq switch-window-shortcut-style 'qwerty)
-	(setq switch-window-qwerty-shortcuts '("a" "s" "d" "f" "j" "k" "l" ";" "w" "e" "r" "u" "i" "o" "q" "t" "y" "p"))
+	(setq switch-window-qwerty-shortcuts '("x" "a" "s" "d" "f" "j" "k" "l" ";" "w" "e" "r" "u" "i" "o" "q" "t" "y" "p"))
 	(setq switch-window-increase 3)
+	(setq switch-window-threshold 3)
 )
 
 (use-package projectile
@@ -216,4 +217,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  ;; '(default ((t (:inherit nil :extend nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width normal :foundry "nil" :family "Fira Code")))))
-(load-theme 'fuck)
+(load-theme 'deeper-blue)
