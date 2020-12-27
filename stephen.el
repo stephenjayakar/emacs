@@ -16,8 +16,6 @@
 
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  PACKAGES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -139,6 +137,18 @@
 	(setq switch-window-threshold 3)
 )
 
+(use-package ace-jump-mode
+  :ensure t
+  :bind (
+    ("C-c SPC" . ace-jump-word-mode)
+    ("C-c C-x SPC" . ace-jump-char-mode)
+  )
+)
+
+(use-package magit
+  :ensure t
+)
+
 (use-package projectile
   :ensure t
   :config
@@ -174,8 +184,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (global-set-key (kbd "C-j") 'newline-and-indent)
 (global-set-key (kbd "M-h") 'backward-kill-word)
-;; TODO: somehow only bind this on Mac OSX
-(global-set-key (kbd "C-c C-c") 'copy-region-to-clipboard-mac)
 (global-set-key (kbd "C-x C-j") 'previous-buffer)
 (global-set-key (kbd "C-x C-l") 'next-buffer)
 (global-set-key (kbd "C-x l") 'goto-line)
