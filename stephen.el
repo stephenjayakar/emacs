@@ -21,6 +21,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package go-mode
   :ensure t
+  :config (
+    add-hook 'before-save-hook 'gofmt-before-save)
 )
 
 (use-package web-mode
@@ -132,7 +134,7 @@
   :config
 	(setq switch-window-multiple-frames t)
 	(setq switch-window-shortcut-style 'qwerty)
-	(setq switch-window-qwerty-shortcuts '("x" "a" "s" "d" "f" "j" "k" "l" ";" "w" "e" "r" "u" "i" "o" "q" "t" "y" "p"))
+	(setq switch-window-qwerty-shortcuts '("a" "s" "d" "f" "j" "k" "l" ";" "w" "e" "r" "u" "i" "o" "q" "t" "y" "p"))
 	(setq switch-window-increase 3)
 	(setq switch-window-threshold 3)
 )
@@ -143,6 +145,10 @@
     ("C-c SPC" . ace-jump-word-mode)
     ("C-c C-x SPC" . ace-jump-char-mode)
   )
+)
+
+(use-package restclient
+  :ensure t
 )
 
 (use-package magit
@@ -208,6 +214,13 @@
 (setq-default c-basic-offset 2)
 ;; Whitespace
 (setq-default show-trailing-whitespace t)
+
+;; Radon's magical jira command
+(setq bug-reference-bug-regexp "\\(\\)\\([A-Z]+-[0-9]+\\)")
+(setq bug-reference-url-format "https://jira.plaid.com/browse/%s")
+(define-globalized-minor-mode bug-reference-global-mode
+  bug-reference-mode bug-reference-mode)
+(bug-reference-global-mode +1)
 
 ;; font and telling emacs my theme is safe and loading it
 (custom-set-variables
