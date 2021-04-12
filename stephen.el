@@ -1,24 +1,43 @@
 (setq debug-on-error 't)
 
-;; Fixing path to mirror the one of my zsh shell
-(let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
-  (setenv "PATH" path)
-  (setq exec-path
-        (append
-         (split-string-and-unquote path ":")
-         exec-path)))
+;; Fixing path to mirror the one of my zsh
+;; (let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
+;;   (setenv "PATH" path)
+;;   (setq exec-path
+;;         (append
+;;          (split-string-and-unquote path ":")
+;;          exec-path)))
+(exec-path-from-shell-initialize)
+
 ;; setting emacs garbage collection threshold to a modern device level
 (setq gc-cons-threshold 100000000)
 
 ;; package setup
 (require 'package)
-(package-initialize)
-
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
+(package-initialize)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  PACKAGES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package exec-path-from-shell
+  :ensure t
+  :config (
+    add-hook 'web-mode-hook 'prettier-js-mode)
+)
+
+(use-package yasnippet
+  :ensure t
+)
+
+(use-package yasnippet-snippets
+  :ensure t
+)
+
+(use-package prettier-js
+  :ensure t
+)
+
 (use-package go-mode
   :ensure t
   :config (
@@ -62,8 +81,21 @@
   )
   :bind (:map lsp-mode-map
     ("C-c t" . lsp-find-definition)
+	("C-x a" . completion-at-point)
   )
 )
+
+;; (use-package company
+;;   :ensure t
+;;   :defer 2
+;;   :diminish
+;;   :custom
+;; 	(company-begin-commands '(self-insert-command))
+;; 	(company-idle-delay .1)
+;; 	(company-minimum-prefix-length 2)
+;; 	(company-show-numbers t)
+;; 	(company-tooltip-align-annotations 't)
+;; )
 
 (use-package dap-mode
   :ensure t
@@ -99,13 +131,6 @@
   :ensure t
   :config
     (flycheck-add-mode 'typescript-tslint 'web-mode)
-)
-
-(use-package company
-  :ensure t
-  :bind (
-    ("C-x a" . company-capf)
-  )
 )
 
 (use-package string-inflection
