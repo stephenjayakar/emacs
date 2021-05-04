@@ -234,6 +234,9 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
+;; yas
+(yas-global-mode)
+
 ;; Type 'y' for yes and 'n' for no
 (fset 'yes-or-no-p 'y-or-n-p)
 
