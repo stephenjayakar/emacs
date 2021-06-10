@@ -160,18 +160,22 @@
   )
 )
 
-(use-package switch-window
-  :ensure t
-  :bind (
-    ("C-x o" . switch-window)
-  )
-  :config
-	(setq switch-window-multiple-frames t)
-	(setq switch-window-shortcut-style 'qwerty)
-	(setq switch-window-qwerty-shortcuts '("a" "s" "d" "f" "j" "k" "l" ";" "w" "e" "r" "u" "i" "o" "q" "t" "y" "p"))
-	(setq switch-window-increase 3)
-	(setq switch-window-threshold 3)
-)
+;; Trying out another window switching paradigm
+(global-set-key (kbd "C-<tab>") 'other-window)
+;; TODO: Undo this once you rewire muscle memory
+(global-set-key (kbd "C-x o") nil)
+;; (use-package switch-window
+;;   :ensure t
+;;   :bind (
+;;     ("C-x o" . switch-window)
+;;   )
+;;   :config
+;; 	(setq switch-window-multiple-frames t)
+;; 	(setq switch-window-shortcut-style 'qwerty)
+;; 	(setq switch-window-qwerty-shortcuts '("a" "s" "d" "f" "j" "k" "l" ";" "w" "e" "r" "u" "i" "o" "q" "t" "y" "p"))
+;; 	(setq switch-window-increase 3)
+;; 	(setq switch-window-threshold 3)
+;; )
 
 (use-package ace-jump-mode
   :ensure t
