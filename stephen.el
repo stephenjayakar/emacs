@@ -162,6 +162,7 @@
 
 ;; Trying out another window switching paradigm
 (global-set-key (kbd "C-<tab>") 'other-window)
+(global-set-key (kbd "C-S-<tab>") 'previous-window-any-frame)
 ;; TODO: Undo this once you rewire muscle memory
 (global-set-key (kbd "C-x o") nil)
 ;; (use-package switch-window
