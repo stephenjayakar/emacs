@@ -94,18 +94,6 @@
   )
 )
 
-;; (use-package company
-;;   :ensure t
-;;   :defer 2
-;;   :diminish
-;;   :custom
-;; 	(company-begin-commands '(self-insert-command))
-;; 	(company-idle-delay .1)
-;; 	(company-minimum-prefix-length 2)
-;; 	(company-show-numbers t)
-;; 	(company-tooltip-align-annotations 't)
-;; )
-
 (use-package dap-mode
   :ensure t
 )
