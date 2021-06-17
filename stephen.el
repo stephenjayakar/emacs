@@ -22,8 +22,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package exec-path-from-shell
   :ensure t
-  :config (
-    add-hook 'web-mode-hook 'prettier-js-mode)
 )
 
 (use-package yasnippet
@@ -31,10 +29,6 @@
 )
 
 (use-package yasnippet-snippets
-  :ensure t
-)
-
-(use-package prettier-js
   :ensure t
 )
 
@@ -49,11 +43,10 @@
 
 (use-package web-mode
   :ensure t
-  :custom
+  :config
     (setq web-mode-markup-indent-offset 2)
     (setq web-mode-code-indent-offset 2)
     (setq web-mode-css-indent-offset 2)
-  :config
     (add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
@@ -84,6 +77,7 @@
     (web-mode . lsp-deferred)
     (rust-mode . lsp-deferred)
     (yaml-mode . lsp-deferred)
+    (web-mode . lsp-deferred)
   :config (
     setq lsp-rust-server 'rust-analyzer
          lsp-auto-guess-root nil
