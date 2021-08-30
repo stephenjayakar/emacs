@@ -65,6 +65,16 @@
   :ensure t
 )
 
+(use-package jenkinsfile-mode
+  :ensure t
+)
+
+(use-package git-link
+  :ensure t
+  :bind
+    ("C-c g l" . git-link)
+)
+
 (use-package yaml-mode
   :ensure t
 )
@@ -220,6 +230,7 @@
 (global-set-key (kbd "C-x l") 'goto-line)
 (global-set-key (kbd "C-x C-r") 'revert-buffer)
 (global-set-key (kbd "C-x C-e") 'eval-buffer)
+(global-set-key (kbd "C-c r") 'replace-string)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  UI ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -257,7 +268,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("5e1f1e8effb6454f616a35fabcdaaa2438c2f506ac67d96a7811b529d70de7d3" default))
+   '("1c039d8c53227074439c425ec195a9ec725397b398afdb69ea23a5d087fec13f" "3cc2699107f09d2fd63caad608d68931669060d8512bbaab869734614076e389" "5e1f1e8effb6454f616a35fabcdaaa2438c2f506ac67d96a7811b529d70de7d3" default))
  '(menu-bar-mode nil)
  '(tool-bar-mode nil))
 ; (custom-set-face
@@ -266,4 +277,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  ;; '(default ((t (:inherit nil :extend nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width normal :foundry "nil" :family "Fira Code")))))
-(load-theme 'deeper-blue)
+(load-theme 'fuck)
