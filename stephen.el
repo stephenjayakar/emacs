@@ -41,6 +41,10 @@
   )
 )
 
+(use-package terraform-mode
+  :ensure t
+)
+
 (use-package web-mode
   :ensure t
   :config
@@ -51,6 +55,7 @@
     (add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.mjs\\'" . web-mode))
 )
 
 (use-package rust-mode
