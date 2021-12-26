@@ -96,6 +96,7 @@
   :config (
     setq lsp-rust-server 'rust-analyzer
          lsp-auto-guess-root nil
+    lsp-ui-doc-enable nil
   )
   :bind (:map lsp-mode-map
     ("C-c t" . lsp-find-definition)
@@ -275,7 +276,8 @@
  '(custom-safe-themes
    '("1c039d8c53227074439c425ec195a9ec725397b398afdb69ea23a5d087fec13f" "3cc2699107f09d2fd63caad608d68931669060d8512bbaab869734614076e389" "5e1f1e8effb6454f616a35fabcdaaa2438c2f506ac67d96a7811b529d70de7d3" default))
  '(menu-bar-mode nil)
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+ '(warning-suppress-log-types '((bug-reference))))
 ; (custom-set-face
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
