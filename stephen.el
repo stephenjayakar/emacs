@@ -226,6 +226,61 @@
 
 (delete-selection-mode t)
 
+;;; Advice
+;; I'm not really sure what advice is
+;; https://www.reddit.com/r/emacs/comments/rlli0u/whats_your_favorite_defadvice/
+(defadvice kill-ring-save (before slick-copy activate compile)
+  "When called interactively with no active region, copy a single line instead."
+  (interactive
+   (if mark-active (list (region-beginning) (region-end))
+     (message "Single line killed")
+     (list (line-beginning-position)
+           (line-beginning-position 2)))))
+
+(defadvice kill-region (before slick-cut activate compile)
+  "When called interactively with no active region, kill a single line instead."
+  (interactive
+   (if mark-active (list (region-beginning) (region-end))
+     (list (line-beginning-position)
+           (line-beginning-position 2)))))
+
+(defun ad-kmacro-change-modebar ()
+  (set-face-attribute 'mode-line nil
+                      :background "Firebrick"
+                      :box `(:line-width -1 :color "salmon" :style released-button)))
+
+(defun ad-kmacro-restore-modebar ()
+  (set-face-attribute 'mode-line nil
+                      :background "RoyalBlue4"
+                      :box `(:line-width -1 :color "RoyalBlue1" :style released-button)))
+
+(defadvice kmacro-start-macro (before kmacro-hl-modeline activate)
+  "Alters `kmacro-start-macro' so it highlights the modeline when
+  recording begins."
+  (ad-kmacro-change-modebar))
+
+(defadvice kmacro-keyboard-quit (before kmacro-rem-hl-modeline activate)
+  "Alters `kmacro-keyboard-quit' so it highlights the modeline when
+  recording begins."
+  (ad-kmacro-restore-modebar))
+
+(defadvice kmacro-end-macro (before kmacro-rem-hl-modeline activate)
+  "Alters `kmacro-end-macro' so it highlights the modeline when
+  recording begins."
+  (ad-kmacro-restore-modebar))
+
+(defadvice backward-kill-word (around delete-pair activate)
+  (if (eq (char-syntax (char-before)) ?\()
+      (progn
+        (backward-char 1)
+        (save-excursion
+          (forward-sexp 1)
+          (delete-char -1))
+        (forward-char 1)
+        (append-next-kill)
+        (kill-backward-chars 1))
+    ad-do-it))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  KEYBINDS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
