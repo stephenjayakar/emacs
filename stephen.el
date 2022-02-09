@@ -118,6 +118,8 @@
   :config (
     ivy-mode 1
   )
+  :bind
+    ("C-M-y" . counsel-yank-pop)
 )
 
 (use-package undo-tree
