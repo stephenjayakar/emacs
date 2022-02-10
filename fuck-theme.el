@@ -3,7 +3,7 @@
 
 (custom-theme-set-faces
  'fuck
- '(default ((t (:inherit nil :extend nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width normal :foundry "default" :family "Fira Code"))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "default" :family "Fira Code"))))
  '(cursor ((t (:background "#ffffaf"))))
  '(fixed-pitch ((t (:family "Monospace"))))
  '(escape-glyph ((t (:foreground "#87af87"))))
