@@ -77,6 +77,8 @@
 
 (use-package git-link
   :ensure t
+  :config
+    (setq git-link-default-branch "master")
   :bind
     ("C-c g l" . git-link)
 )
