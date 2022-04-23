@@ -104,6 +104,7 @@
   :bind (:map lsp-mode-map
     ("C-c t" . lsp-find-definition)
 	("C-x a" . completion-at-point)
+    ("C-x C-a" . lsp-execute-code-action)
   )
 )
 
@@ -206,8 +207,10 @@
   :bind-keymap
     ("C-c p" . projectile-command-map)
 )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(setq-default markdown-fontify-code-blocks-natively t)
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
 
