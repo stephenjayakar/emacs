@@ -57,6 +57,19 @@
     (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.mjs\\'" . web-mode))
+    (define-key web-mode-map (kbd "C-c C-d") nil)
+)
+
+(use-package add-node-modules-path
+  :ensure t
+)
+
+(use-package prettier-js
+  :ensure t
+)
+
+(use-package tide
+  :ensure t
 )
 
 (use-package rust-mode
@@ -95,7 +108,6 @@
     (web-mode . lsp-deferred)
     (rust-mode . lsp-deferred)
     (yaml-mode . lsp-deferred)
-    (web-mode . lsp-deferred)
   :config (
     setq lsp-rust-server 'rust-analyzer
          lsp-auto-guess-root nil
@@ -103,6 +115,7 @@
   )
   :bind (:map lsp-mode-map
     ("C-c t" . lsp-find-definition)
+    ("C-c C-t" . lsp-ui-peek-find-implementation)
 	("C-x a" . completion-at-point)
     ("C-x C-a" . lsp-execute-code-action)
   )
@@ -234,6 +247,11 @@
 
 (delete-selection-mode t)
 
+;; prettier config
+(eval-after-load 'web-mode
+    '(progn
+       (add-hook 'web-mode-hook #'add-node-modules-path)))
+
 ;;; Advice
 ;; I'm not really sure what advice is
 ;; https://www.reddit.com/r/emacs/comments/rlli0u/whats_your_favorite_defadvice/
@@ -300,6 +318,9 @@
 (global-set-key (kbd "C-x C-r") 'revert-buffer)
 (global-set-key (kbd "C-x C-e") 'eval-buffer)
 (global-set-key (kbd "C-c r") 'replace-string)
+(global-set-key (kbd "C-c d") (lambda () (interactive) (point-to-register 'f)))
+(global-set-key (kbd "C-c C-d") (lambda () (interactive) (jump-to-register 'f)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  UI ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -307,6 +328,7 @@
 ;; Display line numbers
 (global-linum-mode)
 (setq linum-format "%d ")
+(setq column-number-mode t)
 
 ;; disable dumb stuff
 (menu-bar-mode -1)
@@ -330,21 +352,5 @@
   bug-reference-mode bug-reference-mode)
 (bug-reference-global-mode +1)
 
-;; font and telling emacs my theme is safe and loading it
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("1c039d8c53227074439c425ec195a9ec725397b398afdb69ea23a5d087fec13f" "3cc2699107f09d2fd63caad608d68931669060d8512bbaab869734614076e389" "5e1f1e8effb6454f616a35fabcdaaa2438c2f506ac67d96a7811b529d70de7d3" default))
- '(menu-bar-mode nil)
- '(tool-bar-mode nil)
- '(warning-suppress-log-types '((bug-reference))))
-; (custom-set-face
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- ;; '(default ((t (:inherit nil :extend nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width normal :foundry "nil" :family "Fira Code")))))
-(load-theme 'fuck)
+(load-theme 'deeper-blue)
+(set-face-attribute 'default nil :height 140)
