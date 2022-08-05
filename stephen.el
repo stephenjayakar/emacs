@@ -352,5 +352,22 @@
   bug-reference-mode bug-reference-mode)
 (bug-reference-global-mode +1)
 
+;; font and telling emacs my theme is safe and loading it
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("1c039d8c53227074439c425ec195a9ec725397b398afdb69ea23a5d087fec13f" "3cc2699107f09d2fd63caad608d68931669060d8512bbaab869734614076e389" "5e1f1e8effb6454f616a35fabcdaaa2438c2f506ac67d96a7811b529d70de7d3" default))
+ '(menu-bar-mode nil)
+ '(tool-bar-mode nil)
+ '(warning-suppress-log-types '((bug-reference))))
+; (custom-set-face
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ ;; '(default ((t (:inherit nil :extend nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width normal :foundry "nil" :family "Fira Code")))))
 (load-theme 'deeper-blue)
 (set-face-attribute 'default nil :height 140)
