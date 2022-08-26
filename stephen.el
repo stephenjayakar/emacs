@@ -111,14 +111,18 @@
   :config (
     setq lsp-rust-server 'rust-analyzer
          lsp-auto-guess-root nil
-    lsp-ui-doc-enable nil
+         lsp-ui-doc-enable nil
+         lsp-completion-mode t
   )
   :bind (:map lsp-mode-map
     ("C-c t" . lsp-find-definition)
     ("C-c C-t" . lsp-ui-peek-find-implementation)
-	("C-x a" . completion-at-point)
     ("C-x C-a" . lsp-execute-code-action)
   )
+)
+
+(use-package company
+  :ensure t
 )
 
 (use-package dap-mode
