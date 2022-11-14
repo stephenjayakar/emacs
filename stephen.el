@@ -233,7 +233,7 @@
 ;; Configuring Built-in packages
 (setq js-indent-level 2)
 (add-hook 'python-mode-hook 'lsp)
-(define-key python-mode-map (kbd "C-c C-d") nil)
+;; (define-key python-mode-map (kbd "C-c C-d") nil)
 
 ;; Custom Functions
 (defun copy-region-to-clipboard-mac ()
