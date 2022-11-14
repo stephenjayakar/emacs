@@ -134,11 +134,12 @@
   :commands lsp-ui-mode
 )
 
+(use-package counsel
+  :ensure t
+)
+
 (use-package ivy
   :ensure t
-  :config (
-    ivy-mode 1
-  )
   :bind
     ("C-M-y" . counsel-yank-pop)
 )
@@ -181,23 +182,9 @@
   )
 )
 
-;; Trying out another window switching paradigm
-(global-set-key (kbd "C-<tab>") 'other-window)
-(global-set-key (kbd "C-S-<tab>") 'previous-window-any-frame)
-;; TODO: Undo this once you rewire muscle memory
-(global-set-key (kbd "C-x o") nil)
-;; (use-package switch-window
-;;   :ensure t
-;;   :bind (
-;;     ("C-x o" . switch-window)
-;;   )
-;;   :config
-;; 	(setq switch-window-multiple-frames t)
-;; 	(setq switch-window-shortcut-style 'qwerty)
-;; 	(setq switch-window-qwerty-shortcuts '("a" "s" "d" "f" "j" "k" "l" ";" "w" "e" "r" "u" "i" "o" "q" "t" "y" "p"))
-;; 	(setq switch-window-increase 3)
-;; 	(setq switch-window-threshold 3)
-;; )
+(use-package nano-theme
+  :ensure t
+)
 
 (use-package ace-jump-mode
   :ensure t
@@ -215,7 +202,8 @@
 
 (use-package magit
   :ensure t
-)
+  :bind
+    ("C-c g m" lambda () (interactive) (magit-find-file "master" (magit-file-relative-name))))
 
 (use-package projectile
   :ensure t
@@ -223,6 +211,10 @@
     (projectile-mode +1)
   :bind-keymap
     ("C-c p" . projectile-command-map)
+)
+
+(use-package gruvbox-theme
+  :ensure t
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -242,10 +234,9 @@
   (shell-command-on-region (region-beginning) (region-end) "pbcopy"))
 
 ;; Moving backup files out of working directory
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
+(setq backup-directory-alist            '((".*" . "~/.Trash")))
+;; lock files?
+(setq create-lockfiles nil)
 
 (setq custom-file "~/.emacs.d/garbage.el")
 
@@ -314,13 +305,19 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  KEYBINDS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Trying out another window switching paradigm
+(global-set-key (kbd "C-<tab>") 'other-window)
+(global-set-key (kbd "C-S-<tab>") 'previous-window-any-frame)
+(global-set-key (kbd "C-x o") nil)
+
+;; Others
 (global-set-key (kbd "C-j") 'newline-and-indent)
 (global-set-key (kbd "M-h") 'backward-kill-word)
 (global-set-key (kbd "C-x C-j") 'previous-buffer)
 (global-set-key (kbd "C-x C-l") 'next-buffer)
 (global-set-key (kbd "C-x l") 'goto-line)
 (global-set-key (kbd "C-x C-r") 'revert-buffer)
-(global-set-key (kbd "C-x C-e") 'eval-buffer)
+(global-set-key (kbd "C-x C-e") 'eval-last-sexp)
 (global-set-key (kbd "C-c r") 'replace-string)
 (global-set-key (kbd "C-c d") (lambda () (interactive) (point-to-register 'f)))
 (global-set-key (kbd "C-c C-d") (lambda () (interactive) (jump-to-register 'f)))
@@ -356,22 +353,6 @@
   bug-reference-mode bug-reference-mode)
 (bug-reference-global-mode +1)
 
-;; font and telling emacs my theme is safe and loading it
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("1c039d8c53227074439c425ec195a9ec725397b398afdb69ea23a5d087fec13f" "3cc2699107f09d2fd63caad608d68931669060d8512bbaab869734614076e389" "5e1f1e8effb6454f616a35fabcdaaa2438c2f506ac67d96a7811b529d70de7d3" default))
- '(menu-bar-mode nil)
- '(tool-bar-mode nil)
- '(warning-suppress-log-types '((bug-reference))))
-; (custom-set-face
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- ;; '(default ((t (:inherit nil :extend nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width normal :foundry "nil" :family "Fira Code")))))
-(load-theme 'deeper-blue)
+;; Theming
+(load-theme 'gruvbox-light-hard)
 (set-face-attribute 'default nil :height 140)
