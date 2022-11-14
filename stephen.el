@@ -273,31 +273,6 @@
      (list (line-beginning-position)
            (line-beginning-position 2)))))
 
-(defun ad-kmacro-change-modebar ()
-  (set-face-attribute 'mode-line nil
-                      :background "Firebrick"
-                      :box `(:line-width -1 :color "salmon" :style released-button)))
-
-(defun ad-kmacro-restore-modebar ()
-  (set-face-attribute 'mode-line nil
-                      :background "RoyalBlue4"
-                      :box `(:line-width -1 :color "RoyalBlue1" :style released-button)))
-
-(defadvice kmacro-start-macro (before kmacro-hl-modeline activate)
-  "Alters `kmacro-start-macro' so it highlights the modeline when
-  recording begins."
-  (ad-kmacro-change-modebar))
-
-(defadvice kmacro-keyboard-quit (before kmacro-rem-hl-modeline activate)
-  "Alters `kmacro-keyboard-quit' so it highlights the modeline when
-  recording begins."
-  (ad-kmacro-restore-modebar))
-
-(defadvice kmacro-end-macro (before kmacro-rem-hl-modeline activate)
-  "Alters `kmacro-end-macro' so it highlights the modeline when
-  recording begins."
-  (ad-kmacro-restore-modebar))
-
 (defadvice backward-kill-word (around delete-pair activate)
   (if (eq (char-syntax (char-before)) ?\()
       (progn
