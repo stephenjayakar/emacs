@@ -121,9 +121,16 @@
   )
 )
 
+
 (use-package company
   :ensure t
 )
+
+(use-package lsp-pyright
+  :ensure t
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp-deferred))))
 
 (use-package dap-mode
   :ensure t
@@ -226,6 +233,7 @@
 ;; Configuring Built-in packages
 (setq js-indent-level 2)
 (add-hook 'python-mode-hook 'lsp)
+(define-key python-mode-map (kbd "C-c C-d") nil)
 
 ;; Custom Functions
 (defun copy-region-to-clipboard-mac ()
