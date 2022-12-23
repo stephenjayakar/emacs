@@ -7,17 +7,12 @@
 
 (setq debug-on-error 't)
 
-;; Fixing path to mirror the one of my zsh
-;; (let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
-;;   (setenv "PATH" path)
-;;   (setq exec-path
-;;         (append
-;;          (split-string-and-unquote path ":")
-;;          exec-path)))
-(exec-path-from-shell-initialize)
+;; (exec-path-from-shell-initialize)
 
 ;; setting emacs garbage collection threshold to a modern device level
 (setq gc-cons-threshold 100000000)
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  PACKAGES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -76,6 +71,9 @@
   :config (setq lsp-rust-server 'rust-analyzer lsp-auto-guess-root
                 nil lsp-ui-doc-enable nil lsp-completion-mode
                 t):bind
+  ;; :config (setq lsp-rust-server 'rust-analyzer lsp-auto-guess-root
+  ;;               nil lsp-ui-doc-enable nil lsp-completion-mode
+  ;;               t):bind
   (:map lsp-mode-map
         ("C-c t" . lsp-find-definition)
         ("C-c C-t" . lsp-ui-peek-find-implementation)
@@ -99,7 +97,12 @@
 
 (use-package selectrum
   :ensure t
-  :config (selectrum-mode +1))
+  :config
+  (selectrum-mode +1))
+
+(use-package selectrum-prescient
+  :ensure t
+  :config (selectrum-prescient-mode +1))
 
 (use-package undo-tree
   :ensure t
@@ -209,21 +212,6 @@
                  (list (line-beginning-position)
                        (line-beginning-position 2)))))
 
-(defadvice backward-kill-word
-    (around delete-pair activate)
-  (if (eq (char-syntax (char-before)) ?
-          \
-          ()
-          (progn
-            (backward-char 1)
-            (save-excursion
-              (forward-sexp 1)
-              (delete-char -1))
-            (forward-char 1)
-            (append-next-kill)
-            (kill-backward-chars 1))
-          ad-do-it)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  KEYBINDS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -260,7 +248,8 @@
                 (lambda ()
                   (interactive)
                   (jump-to-register 'f)))
-
+(global-set-key (kbd "C-x M-s")
+                (subword-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  UI ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -292,6 +281,22 @@
   bug-reference-mode bug-reference-mode)
 (bug-reference-global-mode +1)
 
+;; Customize
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("19a2c0b92a6aa1580f1be2deb7b8a8e3a4857b6c6ccf522d00547878837267e7" default)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
 ;; Theming
 (load-theme 'gruvbox-light-hard)
 (set-face-attribute 'default nil :height 140)
+
