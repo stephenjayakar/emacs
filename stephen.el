@@ -71,9 +71,6 @@
   :config (setq lsp-rust-server 'rust-analyzer lsp-auto-guess-root
                 nil lsp-ui-doc-enable nil lsp-completion-mode
                 t):bind
-  ;; :config (setq lsp-rust-server 'rust-analyzer lsp-auto-guess-root
-  ;;               nil lsp-ui-doc-enable nil lsp-completion-mode
-  ;;               t):bind
   (:map lsp-mode-map
         ("C-c t" . lsp-find-definition)
         ("C-c C-t" . lsp-ui-peek-find-implementation)
@@ -97,8 +94,7 @@
 
 (use-package selectrum
   :ensure t
-  :config
-  (selectrum-mode +1))
+  :config (selectrum-mode +1))
 
 (use-package selectrum-prescient
   :ensure t
@@ -178,8 +174,22 @@
 
 ;; Moving backup files out of working directory
 (setq backup-directory-alist '((".*" . "~/.Trash")))
-;; lock files?
+
+;; Search term: temporary files
+;; Disabling creating lockfiles
 (setq create-lockfiles nil)
+;; Moving the backup files
+(defvar user-temporary-file-directory
+  (concat temporary-file-directory user-login-name "/"))
+(make-directory user-temporary-file-directory t)
+(setq backup-by-copying t)
+(setq backup-directory-alist
+      `(("." . ,user-temporary-file-directory)
+        (,tramp-file-name-regexp nil)))
+(setq auto-save-list-file-prefix
+      (concat user-temporary-file-directory ".auto-saves-"))
+(setq auto-save-file-name-transforms
+      `((".*" ,user-temporary-file-directory t)))
 
 (setq custom-file "~/.emacs.d/garbage.el")
 
@@ -287,8 +297,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("19a2c0b92a6aa1580f1be2deb7b8a8e3a4857b6c6ccf522d00547878837267e7" default)))
+ '(custom-safe-themes '("19a2c0b92a6aa1580f1be2deb7b8a8e3a4857b6c6ccf522d00547878837267e7"
+                        default)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
