@@ -298,5 +298,7 @@
 
 ;; Theming
 (load-theme 'gruvbox-light-hard)
-(set-face-attribute 'default nil :height 140)
+(set-face-attribute 'default nil
+                    :height 150
+                    :family "mononoki")
 
