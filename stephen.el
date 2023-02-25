@@ -311,5 +311,5 @@
 (load-theme 'gruvbox-light-hard)
 (set-face-attribute 'default nil
                     :height 150
-                    :family "mononoki")
+                    :family "Fira Code")
 
