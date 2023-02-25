@@ -29,6 +29,9 @@
   (add-hook 'before-save-hook 'gofmt-before-save)
   (define-key go-mode-map (kbd "C-c C-d") nil))
 
+(use-package docker-compose-mode
+  :ensure t)
+
 (use-package terraform-mode :ensure t)
 
 (use-package web-mode
