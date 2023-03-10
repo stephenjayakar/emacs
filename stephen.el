@@ -286,11 +286,12 @@
 (setq-default show-trailing-whitespace t)
 
 ;; Radon's magical jira command
-(setq bug-reference-bug-regexp "\\(\\)\\([A-Z]+-[0-9]+\\)")
-(setq bug-reference-url-format "https://jira.plaid.com/browse/%s")
-(define-globalized-minor-mode bug-reference-global-mode
-  bug-reference-mode bug-reference-mode)
-(bug-reference-global-mode +1)
+;; TODO: update this to the form TODO(DASHEVO-235)
+;; (setq bug-reference-bug-regexp "\\(\\)\\([A-Z]+-[0-9]+\\)")
+;; (setq bug-reference-url-format "https://jira.plaid.com/browse/%s")
+;; (define-globalized-minor-mode bug-reference-global-mode
+;;   bug-reference-mode bug-reference-mode)
+;; (bug-reference-global-mode +1)
 
 ;; Customize
 (custom-set-variables
