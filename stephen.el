@@ -151,9 +151,9 @@
 
 (use-package gruvbox-theme :ensure t)
 
-(use-package srefactor
-  :ensure t
-  :config (require 'srefactor-lisp))
+;; (use-package srefactor
+;;   :ensure t
+;;   :config (require 'srefactor-lisp))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
