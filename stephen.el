@@ -262,6 +262,16 @@
 (global-set-key (kbd "C-x M-s")
                 (subword-mode))
 
+;; Tab management
+(global-set-key (kbd "C-M-<tab>")
+                'tab-bar-switch-to-next-tab)
+(global-set-key (kbd "C-M-S-<tab>")
+                'tab-bar-switch-to-prev-tab)
+(global-set-key (kbd "s-t")
+                'tab-bar-new-tab)
+(global-set-key (kbd "s-w")
+                'tab-bar-close-tab)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  UI ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
