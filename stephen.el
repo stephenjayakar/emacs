@@ -34,14 +34,14 @@
 
 (use-package terraform-mode :ensure t)
 
-(use-package web-mode
-  :ensure t
-  :config (setq web-mode-markup-indent-offset 2)(setq web-mode-code-indent-offset 2)(setq web-mode-css-indent-offset 2)(add-to-list 'auto-mode-alist
-                                                                                                                                    '("\\.ts\\'" . web-mode))(add-to-list 'auto-mode-alist
-                                                                                                                                    '("\\.js\\'" . web-mode))(add-to-list 'auto-mode-alist
-                                                                                                                                    '("\\.jsx\\'" . web-mode))(add-to-list 'auto-mode-alist
-                                                                                                                                    '("\\.tsx\\'" . web-mode))(add-to-list 'auto-mode-alist
-                                                                                                                                    '("\\.mjs\\'" . web-mode))(define-key web-mode-map (kbd "C-c C-d") nil))
+;; (use-package web-mode
+;;   :ensure t
+;;   :config (setq web-mode-markup-indent-offset 2)(setq web-mode-code-indent-offset 2)(setq web-mode-css-indent-offset 2)(add-to-list 'auto-mode-alist
+;;                                                                                                                                     '("\\.ts\\'" . web-mode))(add-to-list 'auto-mode-alist
+;;                                                                                                                                     '("\\.js\\'" . web-mode))(add-to-list 'auto-mode-alist
+;;                                                                                                                                     '("\\.jsx\\'" . web-mode))(add-to-list 'auto-mode-alist
+;;                                                                                                                                     '("\\.tsx\\'" . web-mode))(add-to-list 'auto-mode-alist
+;;                                                                                                                                     '("\\.mjs\\'" . web-mode))(define-key web-mode-map (kbd "C-c C-d") nil))
 
 (use-package add-node-modules-path :ensure t)
 
@@ -68,13 +68,15 @@
   :ensure t
   :commands (lsp lsp-deferred):hook
   (go-mode . lsp-deferred)
-  (web-mode . lsp-deferred)
+  ;; (web-mode . lsp-deferred)
+  (js-mode . lsp-deferred)
+  (tsx-ts-mode . lsp-deferred)
   (rust-mode . lsp-deferred)
   (yaml-mode . lsp-deferred)
   :config (setq lsp-rust-server 'rust-analyzer lsp-auto-guess-root
                 nil lsp-ui-doc-enable nil lsp-completion-mode
-                t):bind
-  (:map lsp-mode-map
+                t)
+  :bind (:map lsp-mode-map
         ("C-c t" . lsp-find-definition)
         ("C-c C-t" . lsp-ui-peek-find-implementation)
         ("C-x C-a" . lsp-execute-code-action)))
@@ -157,6 +159,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Emacs 29 -- Set up tsx-ts-mode
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+
 (setq-default markdown-fontify-code-blocks-natively
               t)
 (setq-default tab-width 4)
@@ -197,9 +203,9 @@
 (delete-selection-mode t)
 
 ;; prettier config
-(eval-after-load 'web-mode
-  '(progn
-     (add-hook 'web-mode-hook #'add-node-modules-path)))
+;; (eval-after-load 'web-mode
+;;   '(progn
+;;      (add-hook 'web-mode-hook #'add-node-modules-path)))
 
 ;;; Advice
 ;; I'm not really sure what advice is
@@ -276,9 +282,7 @@
 ;;;  UI ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Display line numbers
-(global-linum-mode)
-(setq linum-format "%d ")
-(setq column-number-mode t)
+(global-display-line-numbers-mode 1)
 
 ;; disable dumb stuff
 (menu-bar-mode -1)
