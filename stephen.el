@@ -313,7 +313,7 @@
  )
 
 ;; Theming
-(load-theme 'fuck)
+(load-theme 'gruvbox-dark-hard)
 (set-face-attribute 'default nil
                     :height 140
                     :family "Fira Code")
