@@ -12,8 +12,15 @@
 ;; setting emacs garbage collection threshold to a modern device level
 (setq gc-cons-threshold 100000000)
 
+(load-file "~/.emacs.d/tiling.el")
 
-;; Private key setup
+(setq custom-file "~/.emacs.d/custom.el")
+
+(load-file "~/.emacs.d/custom.el")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;  PRIVATE KEYS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun read-api-key-from-file (filepath)
   "Read the content of FILEPATH and return it as a string. If the file does not exist, return an empty string."
   (if (file-exists-p filepath)
@@ -23,7 +30,7 @@
     ""))
 
 (defvar openai-api-key
-  (read-api-key-from-file "secret/openai-key"))
+  (read-api-key-from-file "~/.emacs.d/secret/openai-key"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  PACKAGES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -175,7 +182,7 @@
   :ensure t
   :config
   (setq gptel-api-key openai-api-key)
-  (setq gptel-model "gpt-4"))
+  (setq-default gptel-model "gpt-4"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -295,6 +302,8 @@
                 'tab-bar-new-tab)
 (global-set-key (kbd "s-w")
                 'tab-bar-close-tab)
+(global-set-key (kbd "C-\\")
+                'tiling-cycle)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  UI ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -324,5 +333,3 @@
 ;; (define-globalized-minor-mode bug-reference-global-mode
 ;;   bug-reference-mode bug-reference-mode)
 ;; (bug-reference-global-mode +1)
-
-(setq custom-file "~/.emacs.d/custom.el")
