@@ -12,3 +12,6 @@ ac*
 eln-cache/
 url/
 bookmarks
+custom.el
+secret/
+srecode-map.el

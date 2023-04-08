@@ -13,6 +13,17 @@
 (setq gc-cons-threshold 100000000)
 
 
+;; Private key setup
+(defun read-api-key-from-file (filepath)
+  "Read the content of FILEPATH and return it as a string. If the file does not exist, return an empty string."
+  (if (file-exists-p filepath)
+      (with-temp-buffer
+        (insert-file-contents-literally filepath)
+        (buffer-substring-no-properties (point-min) (point-max)))
+    ""))
+
+(defvar openai-api-key
+  (read-api-key-from-file "secret/openai-key"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  PACKAGES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -28,6 +39,9 @@
   :init (setq gofmt-command '"goimports"):config
   (add-hook 'before-save-hook 'gofmt-before-save)
   (define-key go-mode-map (kbd "C-c C-d") nil))
+
+(use-package glsl-mode
+  :ensure t)
 
 (use-package docker-compose-mode
   :ensure t)
@@ -157,6 +171,12 @@
 ;;   :ensure t
 ;;   :config (require 'srefactor-lisp))
 
+(use-package gptel
+  :ensure t
+  :config
+  (setq gptel-api-key openai-api-key)
+  (setq gptel-model "gpt-4"))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Emacs 29 -- Set up tsx-ts-mode
@@ -197,8 +217,6 @@
                                (,tramp-file-name-regexp nil)))
 (setq auto-save-list-file-prefix (concat user-temporary-file-directory ".auto-saves-"))
 (setq auto-save-file-name-transforms `((".*" ,user-temporary-file-directory t)))
-
-(setq custom-file "~/.emacs.d/garbage.el")
 
 (delete-selection-mode t)
 
@@ -307,24 +325,4 @@
 ;;   bug-reference-mode bug-reference-mode)
 ;; (bug-reference-global-mode +1)
 
-;; Customize
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes '("19a2c0b92a6aa1580f1be2deb7b8a8e3a4857b6c6ccf522d00547878837267e7"
-                        default)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
-;; Theming
-(load-theme 'gruvbox-light-hard)
-(set-face-attribute 'default nil
-                    :height 150
-                    :family "Fira Code")
-
+(setq custom-file "~/.emacs.d/custom.el")
