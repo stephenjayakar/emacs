@@ -55,15 +55,6 @@
 
 (use-package terraform-mode :ensure t)
 
-;; (use-package web-mode
-;;   :ensure t
-;;   :config (setq web-mode-markup-indent-offset 2)(setq web-mode-code-indent-offset 2)(setq web-mode-css-indent-offset 2)(add-to-list 'auto-mode-alist
-;;                                                                                                                                     '("\\.ts\\'" . web-mode))(add-to-list 'auto-mode-alist
-;;                                                                                                                                     '("\\.js\\'" . web-mode))(add-to-list 'auto-mode-alist
-;;                                                                                                                                     '("\\.jsx\\'" . web-mode))(add-to-list 'auto-mode-alist
-;;                                                                                                                                     '("\\.tsx\\'" . web-mode))(add-to-list 'auto-mode-alist
-;;                                                                                                                                     '("\\.mjs\\'" . web-mode))(define-key web-mode-map (kbd "C-c C-d") nil))
-
 (use-package add-node-modules-path :ensure t)
 
 (use-package prettier-js :ensure t)
@@ -101,7 +92,6 @@
         ("C-c t" . lsp-find-definition)
         ("C-c C-t" . lsp-ui-peek-find-implementation)
         ("C-x C-a" . lsp-execute-code-action)))
-
 
 (use-package company :ensure t)
 
