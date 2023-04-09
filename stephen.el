@@ -183,19 +183,6 @@
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 
-(setq-default markdown-fontify-code-blocks-natively
-              t)
-(defun my-markdown-mode-hook ()
-  "Set a specific font for `markdown-mode'."
-  (face-remap-add-relative 'default :family "Helvetica" :height 160)
-
-  ;; Set word-wrapping parameter
-  (setq fill-column 80) ; Set the desired column number to wrap at
-  (turn-on-auto-fill))  ; Enable automatic line-wrapping
-
-(add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
-
-
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
 
@@ -337,6 +324,28 @@
 ;; (define-globalized-minor-mode bug-reference-global-mode
 ;;   bug-reference-mode bug-reference-mode)
 ;; (bug-reference-global-mode +1)
+
+
+;; MARKDOWN mode configuration -- I want this to look similar to Notion
+(setq-default markdown-fontify-code-blocks-natively
+              t)
+
+;; TODO: Figure out if I can move the font configurations -> customize
+(defun my-markdown-mode-hook ()
+  "Set a specific font for `markdown-mode'."
+  (face-remap-add-relative 'default :family "Helvetica" :height 200)
+  (visual-line-mode 1)
+  (visual-fill-column-mode)
+  (setq fill-column 100)
+  (setq visual-fill-column-center-text t)
+  (display-line-numbers-mode 0))
+
+(add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
+(set-face-attribute 'markdown-header-face-1 nil :height 1.3 :weight 'bold)
+(set-face-attribute 'markdown-header-face-2 nil :height 1.2 :weight 'bold)
+(set-face-attribute 'markdown-header-face-3 nil :height 1.1 :weight 'bold)
+(set-face-attribute 'markdown-header-delimiter-face nil :weight 'semibold)
+(set-face-attribute 'markdown-inline-code-face nil :box '(:line-width 1))
 
 (provide 'stephen)
 
