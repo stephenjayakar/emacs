@@ -182,6 +182,17 @@
 
 (setq-default markdown-fontify-code-blocks-natively
               t)
+(defun my-markdown-mode-hook ()
+  ;; Set a specific font for markdown-mode
+  (face-remap-add-relative 'default :family "Helvetica" :height 160)
+
+  ;; Set word-wrapping parameter
+  (setq fill-column 80) ; Set the desired column number to wrap at
+  (turn-on-auto-fill))  ; Enable automatic line-wrapping
+
+(add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
+
+
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
 
