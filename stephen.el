@@ -1,5 +1,8 @@
-;; package setup
+;;; stephen.el --- Stephen's emacs config
+
 (require 'package)
+;;; Code:
+
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/")
              t)
@@ -22,7 +25,7 @@
 ;;;  PRIVATE KEYS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun read-api-key-from-file (filepath)
-  "Read the content of FILEPATH and return it as a string. If the file does not exist, return an empty string."
+  "Read the content of FILEPATH and return it as a string.  If the file does not exist, return an empty string."
   (if (file-exists-p filepath)
       (with-temp-buffer
         (insert-file-contents-literally filepath)
@@ -71,8 +74,8 @@
 
 (use-package git-link
   :ensure t
-  :config (setq git-link-default-branch "master"):bind
-  ("C-c g l" . git-link))
+  :config (setq git-link-default-branch "master")
+  :bind ("C-c g l" . git-link))
 
 (use-package yaml-mode :ensure t)
 
@@ -183,7 +186,7 @@
 (setq-default markdown-fontify-code-blocks-natively
               t)
 (defun my-markdown-mode-hook ()
-  ;; Set a specific font for markdown-mode
+  "Set a specific font for `markdown-mode'."
   (face-remap-add-relative 'default :family "Helvetica" :height 160)
 
   ;; Set word-wrapping parameter
@@ -203,7 +206,7 @@
 
 ;; Custom Functions
 (defun copy-region-to-clipboard-mac ()
-  "Copies the selected region to system clipboard"
+  "Copies the selected region to system clipboard."
   (interactive)
   (shell-command-on-region (region-beginning)
                            (region-end)
@@ -334,3 +337,7 @@
 ;; (define-globalized-minor-mode bug-reference-global-mode
 ;;   bug-reference-mode bug-reference-mode)
 ;; (bug-reference-global-mode +1)
+
+(provide 'stephen)
+
+;;; stephen.el ends here
