@@ -29,11 +29,11 @@
   (if (file-exists-p filepath)
       (with-temp-buffer
         (insert-file-contents-literally filepath)
-        (buffer-substring-no-properties (point-min) (point-max)))
+        (buffer-substring-no-properties (point-min)
+                                        (point-max)))
     ""))
 
-(defvar openai-api-key
-  (read-api-key-from-file "~/.emacs.d/secret/openai-key"))
+(defvar openai-api-key (read-api-key-from-file "~/.emacs.d/secret/openai-key"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  PACKAGES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -50,11 +50,9 @@
   (add-hook 'before-save-hook 'gofmt-before-save)
   (define-key go-mode-map (kbd "C-c C-d") nil))
 
-(use-package glsl-mode
-  :ensure t)
+(use-package glsl-mode :ensure t)
 
-(use-package docker-compose-mode
-  :ensure t)
+(use-package docker-compose-mode :ensure t)
 
 (use-package terraform-mode :ensure t)
 
@@ -74,8 +72,8 @@
 
 (use-package git-link
   :ensure t
-  :config (setq git-link-default-branch "master")
-  :bind ("C-c g l" . git-link))
+  :config (setq git-link-default-branch "master"):bind
+  ("C-c g l" . git-link))
 
 (use-package yaml-mode :ensure t)
 
@@ -90,8 +88,8 @@
   (yaml-mode . lsp-deferred)
   :config (setq lsp-rust-server 'rust-analyzer lsp-auto-guess-root
                 nil lsp-ui-doc-enable nil lsp-completion-mode
-                t)
-  :bind (:map lsp-mode-map
+                t):bind
+  (:map lsp-mode-map
         ("C-c t" . lsp-find-definition)
         ("C-c C-t" . lsp-ui-peek-find-implementation)
         ("C-x C-a" . lsp-execute-code-action)))
@@ -167,21 +165,21 @@
 
 (use-package gruvbox-theme :ensure t)
 
-;; (use-package srefactor
-;;   :ensure t
-;;   :config (require 'srefactor-lisp))
+(use-package srefactor
+  :ensure t
+  :config (require 'srefactor-lisp))
 
 (use-package gptel
   :ensure t
-  :config
-  (setq gptel-api-key openai-api-key)
-  (setq-default gptel-model "gpt-4"))
+  :config (setq gptel-api-key openai-api-key)(setq-default gptel-model "gpt-4"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Emacs 29 -- Set up tsx-ts-mode
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . tsx-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist
+             '("\\.ts\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist
+             '("\\.tsx\\'" . tsx-ts-mode))
 
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
@@ -333,7 +331,8 @@
 ;; TODO: Figure out if I can move the font configurations -> customize
 (defun my-markdown-mode-hook ()
   "Set a specific font for `markdown-mode'."
-  (face-remap-add-relative 'default :family "Helvetica" :height 200)
+  (face-remap-add-relative 'default :family "Helvetica"
+                           :height 200)
   (visual-line-mode 1)
   (visual-fill-column-mode)
   (setq fill-column 100)
@@ -341,11 +340,20 @@
   (display-line-numbers-mode 0))
 
 (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
-(set-face-attribute 'markdown-header-face-1 nil :height 1.3 :weight 'bold)
-(set-face-attribute 'markdown-header-face-2 nil :height 1.2 :weight 'bold)
-(set-face-attribute 'markdown-header-face-3 nil :height 1.1 :weight 'bold)
-(set-face-attribute 'markdown-header-delimiter-face nil :weight 'semibold)
-(set-face-attribute 'markdown-inline-code-face nil :box '(:line-width 1))
+(set-face-attribute 'markdown-header-face-1
+                    nil :height 1.3
+                    :weight 'bold)
+(set-face-attribute 'markdown-header-face-2
+                    nil :height 1.2
+                    :weight 'bold)
+(set-face-attribute 'markdown-header-face-3
+                    nil :height 1.1
+                    :weight 'bold)
+(set-face-attribute 'markdown-header-delimiter-face
+                    nil :weight 'semibold)
+(set-face-attribute 'markdown-inline-code-face
+                    nil
+                    :box '(:line-width 1))
 
 (provide 'stephen)
 
