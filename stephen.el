@@ -337,6 +337,9 @@
   (visual-fill-column-mode)
   (setq fill-column 100)
   (setq visual-fill-column-center-text t)
+  (markdown-toggle-inline-images)
+  (setq markdown-display-remote-images t)
+  (setq markdown-max-image-size (800 . 800))
   (display-line-numbers-mode 0))
 
 (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
