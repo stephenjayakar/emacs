@@ -173,6 +173,9 @@
   :ensure t
   :config (setq gptel-api-key openai-api-key)(setq-default gptel-model "gpt-4"))
 
+(use-package visual-fill-column
+  :ensure t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Emacs 29 -- Set up tsx-ts-mode
@@ -339,7 +342,7 @@
   (setq visual-fill-column-center-text t)
   (markdown-toggle-inline-images)
   (setq markdown-display-remote-images t)
-  (setq markdown-max-image-size (800 . 800))
+  (setq markdown-max-image-size '(800 . 800))
   (display-line-numbers-mode 0))
 
 (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
