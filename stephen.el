@@ -173,6 +173,9 @@
   :ensure t
   :config (setq gptel-api-key openai-api-key)(setq-default gptel-model "gpt-4"))
 
+(use-package visual-fill-column
+  :ensure t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Emacs 29 -- Set up tsx-ts-mode
