@@ -315,15 +315,6 @@
 ;; Whitespace
 (setq-default show-trailing-whitespace t)
 
-;; Radon's magical jira command
-;; TODO: update this to the form TODO(DASHEVO-235)
-;; (setq bug-reference-bug-regexp "\\(\\)\\([A-Z]+-[0-9]+\\)")
-;; (setq bug-reference-url-format "https://jira.plaid.com/browse/%s")
-;; (define-globalized-minor-mode bug-reference-global-mode
-;;   bug-reference-mode bug-reference-mode)
-;; (bug-reference-global-mode +1)
-
-
 ;; MARKDOWN mode configuration -- I want this to look similar to Notion
 (setq-default markdown-fontify-code-blocks-natively
               t)
@@ -339,10 +330,11 @@
   (setq visual-fill-column-center-text t)
   (markdown-toggle-inline-images)
   (setq markdown-display-remote-images t)
-  (setq markdown-max-image-size (800 . 800))
+  (setq markdown-max-image-size '(800 . 800))
   (display-line-numbers-mode 0))
 
 (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
+
 (set-face-attribute 'markdown-header-face-1
                     nil :height 1.3
                     :weight 'bold)
