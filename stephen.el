@@ -58,7 +58,11 @@
 
 (use-package add-node-modules-path :ensure t)
 
-(use-package prettier-js :ensure t)
+(use-package prettier-js
+  :ensure t
+  :hook
+  (typescript-ts-base-mode . prettier-js-mode)
+  (typescript-ts-mode . prettier-js-mode))
 
 (use-package tide :ensure t)
 
@@ -251,7 +255,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Trying out another window switching paradigm
 (global-set-key (kbd "C-<tab>")
-                'other-window)
+                'next-window-any-frame)
 (global-set-key (kbd "C-S-<tab>")
                 'previous-window-any-frame)
 (global-set-key (kbd "C-x o")
@@ -290,6 +294,10 @@
                 'tab-bar-switch-to-next-tab)
 (global-set-key (kbd "C-M-S-<tab>")
                 'tab-bar-switch-to-prev-tab)
+(global-set-key (kbd "s-}")
+                'tab-bar-switch-to-next-tab)
+(global-set-key (kbd "s-{")
+                'tab-bar-switch-to-prev-tab)
 (global-set-key (kbd "s-t")
                 'tab-bar-new-tab)
 (global-set-key (kbd "s-w")
@@ -322,6 +330,13 @@
 (setq-default markdown-fontify-code-blocks-natively
               t)
 
+(defun clear-whitespace-and-newline-and-indent ()
+  (interactive)
+  (markdown-enter-key)
+  (previous-line)
+  (delete-horizontal-space)
+  (next-line))
+
 ;; TODO: Figure out if I can move the font configurations -> customize
 (defun my-markdown-mode-hook ()
   "Set a specific font for `markdown-mode'."
@@ -334,7 +349,8 @@
   (markdown-display-inline-images)
   (setq markdown-display-remote-images t)
   (setq markdown-max-image-size '(800 . 800))
-  (display-line-numbers-mode 0))
+  (display-line-numbers-mode 0)
+  (local-set-key (kbd "RET") 'clear-whitespace-and-newline-and-indent))
 
 (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
 
