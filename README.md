@@ -18,5 +18,9 @@ You might need to install `use-package` and `exec-path-from-shell` beforehand.
 * use-package : need this to get all the other dependencies!  just `package-install` it.
 
 # outside of emacs dependencies
+Highkey assumes you're using MacOSX. Sorry.
+
+Other dependencies:
 * fzf
 * TODO: pbcopy (should probably make this os-agnostic soon)
+
