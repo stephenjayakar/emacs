@@ -19,8 +19,6 @@
 
 (setq custom-file "~/.emacs.d/custom.el")
 
-(load-file "~/.emacs.d/custom.el")
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  PRIVATE KEYS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -369,6 +367,14 @@
 (set-face-attribute 'markdown-inline-code-face
                     nil
                     :box '(:line-width 1))
+
+;; Defer custom loading if there's a daemon -- otherwise just load it.
+(defun load-custom (frame)
+  (select-frame frame)
+  (load-file "~/.emacs.d/custom.el"))
+(if (daemonp)
+    (add-hook 'after-make-frame-functions #'load-custom)
+  (load-file "~/.emacs.d/custom.el"))
 
 (provide 'stephen)
 
