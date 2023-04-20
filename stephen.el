@@ -334,6 +334,7 @@
   (interactive)
   (markdown-enter-key)
   (previous-line)
+  (end-of-line)
   (delete-horizontal-space)
   (next-line))
 
