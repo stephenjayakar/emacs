@@ -140,7 +140,8 @@
   :ensure t
   :bind (("C-x f" . fzf-git)))
 
-(use-package nano-theme :ensure t)
+(use-package material-theme
+  :ensure t)
 
 (use-package ace-jump-mode
   :ensure t
