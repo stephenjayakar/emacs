@@ -174,7 +174,9 @@
 
 (use-package gptel
   :ensure t
-  :config (setq gptel-api-key openai-api-key)(setq-default gptel-model "gpt-4"))
+  :config
+  (setq gptel-api-key openai-api-key)
+  (setq-default gptel-model "gpt-4-32k"))
 
 (use-package visual-fill-column
   :ensure t)
