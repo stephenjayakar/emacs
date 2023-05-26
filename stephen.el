@@ -36,6 +36,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  PACKAGES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package adaptive-wrap :ensure t)
+
 (use-package exec-path-from-shell :ensure t)
 
 (use-package yasnippet :ensure t)
@@ -352,7 +354,8 @@
   (setq markdown-display-remote-images t)
   (setq markdown-max-image-size '(800 . 800))
   (display-line-numbers-mode 0)
-  (local-set-key (kbd "RET") 'clear-whitespace-and-newline-and-indent))
+  (local-set-key (kbd "RET") 'clear-whitespace-and-newline-and-indent)
+  (adaptive-wrap-prefix-mode))
 
 (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
 
