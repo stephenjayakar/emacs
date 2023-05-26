@@ -344,7 +344,7 @@
 ;; TODO: Figure out if I can move the font configurations -> customize
 (defun my-markdown-mode-hook ()
   "Set a specific font for `markdown-mode'."
-  (face-remap-add-relative 'default :family "Helvetica"
+  (face-remap-add-relative 'default :family "Helvetica Neue"
                            :height 200)
   (visual-line-mode 1)
   (visual-fill-column-mode)
