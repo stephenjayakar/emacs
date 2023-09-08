@@ -50,6 +50,8 @@
   (add-hook 'before-save-hook 'gofmt-before-save)
   (define-key go-mode-map (kbd "C-c C-d") nil))
 
+(use-package handlebars-mode :ensure t)
+
 (use-package glsl-mode :ensure t)
 
 (use-package docker-compose-mode :ensure t)
@@ -68,7 +70,13 @@
 
 (use-package rust-mode :ensure t)
 
-(use-package protobuf-mode :ensure t)
+(use-package protobuf-mode
+  :ensure t
+  :config
+  (add-hook 'protobuf-mode-hook
+    (lambda ()
+      (local-set-key (kbd "C-c p") 'proto-add-rpc)
+      (local-set-key (kbd "C-c n") 'proto-renumber))))
 
 (use-package elixir-mode :ensure t)
 
@@ -181,6 +189,12 @@
   (setq-default gptel-model "gpt-4-32k"))
 
 (use-package visual-fill-column
+  :ensure t)
+
+(use-package wgrep
+  :ensure t)
+
+(use-package wgrep-ag
   :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -355,7 +369,8 @@
   (setq markdown-max-image-size '(800 . 800))
   (display-line-numbers-mode 0)
   (local-set-key (kbd "RET") 'clear-whitespace-and-newline-and-indent)
-  (adaptive-wrap-prefix-mode))
+  (adaptive-wrap-prefix-mode)
+  (define-key markdown-mode-map (kbd "C-c C-d") nil))
 
 (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
 
@@ -373,6 +388,36 @@
 (set-face-attribute 'markdown-inline-code-face
                     nil
                     :box '(:line-width 1))
+
+(defun proto-add-rpc (name)
+  "Create a template for adding gRPC services and messages to .proto files"
+  (interactive "sEnter the function name: ")
+  (insert
+   (format "%s %s(%sRequest) returns (%sResponse);\n"
+           "rpc"
+           name
+           name
+           name))
+  (goto-char (point-max))
+  (newline)
+  (insert
+   (format "message %sRequest {}\n" name))
+  (insert
+   (format "message %sResponse {}\n" name)))
+
+(defun proto-renumber ()
+  "Renumber selected protobuf fields in ascending order."
+  (interactive)
+  (if (use-region-p)
+      (let ((counter 1))
+        (save-excursion
+          (narrow-to-region (region-beginning) (region-end))
+          (goto-char (point-min))
+          (while (re-search-forward "= \\([0-9]+\\);" nil t)
+            (replace-match (format "= %d;" counter) nil nil)
+            (setq counter (1+ counter))))
+        (widen))
+    (message "You must select a region first!")))
 
 ;; Defer custom loading if there's a daemon -- otherwise just load it.
 (defun load-custom (frame)
