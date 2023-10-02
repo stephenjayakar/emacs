@@ -19,6 +19,8 @@
 
 (setq custom-file "~/.emacs.d/custom.el")
 
+(require 'bind-key)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  PRIVATE KEYS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -270,12 +272,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  KEYBINDS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Trying out another window switching paradigm
-(global-set-key (kbd "C-<tab>")
-                'next-window-any-frame)
-(global-set-key (kbd "C-S-<tab>")
+(bind-key (kbd "C-<tab>")
+          'next-window-any-frame)
+(with-eval-after-load 'magit-status
+  (define-key magit-status-mode-map (kbd "C-<tab>") nil))
+(bind-key (kbd "C-S-<tab>")
                 'previous-window-any-frame)
-(global-set-key (kbd "C-x o")
+(bind-key (kbd "C-x o")
                 nil)
 
 ;; Others
