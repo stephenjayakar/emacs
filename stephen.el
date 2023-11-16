@@ -21,6 +21,12 @@
 
 (require 'bind-key)
 
+;; markdown drag and drop config
+(load-file "~/.emacs.d/markdown-dnd-images.el")
+(setq dnd-save-directory "images")
+(setq dnd-view-inline t)
+(setq dnd-save-buffer-name nil)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  PRIVATE KEYS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -77,7 +83,6 @@
   :config
   (add-hook 'protobuf-mode-hook
     (lambda ()
-      (local-set-key (kbd "C-c p") 'proto-add-rpc)
       (local-set-key (kbd "C-c n") 'proto-renumber))))
 
 (use-package elixir-mode :ensure t)
@@ -175,7 +180,9 @@
 
 (use-package projectile
   :ensure t
-  :config (projectile-mode +1):bind-keymap
+  :config
+  (setq projectile-enable-caching t)
+  (projectile-mode +1):bind-keymap
   ("C-c p" . projectile-command-map))
 
 (use-package gruvbox-theme :ensure t)
@@ -188,7 +195,7 @@
   :ensure t
   :config
   (setq gptel-api-key openai-api-key)
-  (setq-default gptel-model "gpt-4-32k"))
+  (setq-default gptel-model "gpt-4-1106-preview"))
 
 (use-package visual-fill-column
   :ensure t)
@@ -358,40 +365,6 @@
   (delete-horizontal-space)
   (next-line))
 
-;; TODO: Figure out if I can move the font configurations -> customize
-(defun my-markdown-mode-hook ()
-  "Set a specific font for `markdown-mode'."
-  (face-remap-add-relative 'default :family "Helvetica Neue"
-                           :height 200)
-  (visual-line-mode 1)
-  (visual-fill-column-mode)
-  (setq fill-column 100)
-  (setq visual-fill-column-center-text t)
-  (markdown-display-inline-images)
-  (setq markdown-display-remote-images t)
-  (setq markdown-max-image-size '(800 . 800))
-  (display-line-numbers-mode 0)
-  (local-set-key (kbd "RET") 'clear-whitespace-and-newline-and-indent)
-  (adaptive-wrap-prefix-mode)
-  (define-key markdown-mode-map (kbd "C-c C-d") nil))
-
-(add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
-
-(set-face-attribute 'markdown-header-face-1
-                    nil :height 1.3
-                    :weight 'bold)
-(set-face-attribute 'markdown-header-face-2
-                    nil :height 1.2
-                    :weight 'bold)
-(set-face-attribute 'markdown-header-face-3
-                    nil :height 1.1
-                    :weight 'bold)
-(set-face-attribute 'markdown-header-delimiter-face
-                    nil :weight 'semibold)
-(set-face-attribute 'markdown-inline-code-face
-                    nil
-                    :box '(:line-width 1))
-
 (defun proto-add-rpc (name)
   "Create a template for adding gRPC services and messages to .proto files"
   (interactive "sEnter the function name: ")
@@ -429,6 +402,40 @@
 (if (daemonp)
     (add-hook 'after-make-frame-functions #'load-custom)
   (load-file "~/.emacs.d/custom.el"))
+
+;; TODO: Figure out if I can move the font configurations -> customize
+(defun my-markdown-mode-hook ()
+  "Set a specific font for `markdown-mode'."
+  (face-remap-add-relative 'default :family "Helvetica Neue"
+                           :height 200)
+  (visual-line-mode 1)
+  (visual-fill-column-mode)
+  (setq fill-column 100)
+  (setq visual-fill-column-center-text t)
+  (markdown-display-inline-images)
+  (setq markdown-display-remote-images t)
+  (setq markdown-max-image-size '(800 . 800))
+  (display-line-numbers-mode 0)
+  (local-set-key (kbd "RET") 'clear-whitespace-and-newline-and-indent)
+  (adaptive-wrap-prefix-mode)
+  (define-key markdown-mode-map (kbd "C-c C-d") nil))
+
+(add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
+
+(set-face-attribute 'markdown-header-face-1
+                    nil :height 1.3
+                    :weight 'bold)
+(set-face-attribute 'markdown-header-face-2
+                    nil :height 1.2
+                    :weight 'bold)
+(set-face-attribute 'markdown-header-face-3
+                    nil :height 1.1
+                    :weight 'bold)
+(set-face-attribute 'markdown-header-delimiter-face
+                    nil :weight 'semibold)
+(set-face-attribute 'markdown-inline-code-face
+                    nil
+                    :box '(:line-width 1))
 
 (provide 'stephen)
 
