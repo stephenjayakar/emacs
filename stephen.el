@@ -22,10 +22,10 @@
 (require 'bind-key)
 
 ;; markdown drag and drop config
-(load-file "~/.emacs.d/markdown-dnd-images.el")
-(setq dnd-save-directory "images")
-(setq dnd-view-inline t)
-(setq dnd-save-buffer-name nil)
+;; (load-file "~/.emacs.d/markdown-dnd-images.el")
+;; (setq dnd-save-directory "images")
+;; (setq dnd-view-inline t)
+;; (setq dnd-save-buffer-name nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  PRIVATE KEYS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -58,7 +58,7 @@
   (add-hook 'before-save-hook 'gofmt-before-save)
   (define-key go-mode-map (kbd "C-c C-d") nil))
 
-(use-package handlebars-mode :ensure t)
+;; (use-package handlebars-mode :ensure t)
 
 (use-package glsl-mode :ensure t)
 
@@ -200,11 +200,11 @@
 (use-package visual-fill-column
   :ensure t)
 
-(use-package wgrep
-  :ensure t)
+;;(use-package wgrep
+;;  :ensure t)
 
-(use-package wgrep-ag
-  :ensure t)
+;;(use-package wgrep-ag
+;;  :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -404,6 +404,8 @@
   (load-file "~/.emacs.d/custom.el"))
 
 ;; TODO: Figure out if I can move the font configurations -> customize
+;; Note: I moved the header scaling -> customize as well as the box
+;; around the inline code.
 (defun my-markdown-mode-hook ()
   "Set a specific font for `markdown-mode'."
   (face-remap-add-relative 'default :family "Helvetica Neue"
@@ -421,21 +423,6 @@
   (define-key markdown-mode-map (kbd "C-c C-d") nil))
 
 (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
-
-(set-face-attribute 'markdown-header-face-1
-                    nil :height 1.3
-                    :weight 'bold)
-(set-face-attribute 'markdown-header-face-2
-                    nil :height 1.2
-                    :weight 'bold)
-(set-face-attribute 'markdown-header-face-3
-                    nil :height 1.1
-                    :weight 'bold)
-(set-face-attribute 'markdown-header-delimiter-face
-                    nil :weight 'semibold)
-(set-face-attribute 'markdown-inline-code-face
-                    nil
-                    :box '(:line-width 1))
 
 (provide 'stephen)
 
