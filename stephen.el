@@ -58,7 +58,7 @@
   (add-hook 'before-save-hook 'gofmt-before-save)
   (define-key go-mode-map (kbd "C-c C-d") nil))
 
-;; (use-package handlebars-mode :ensure t)
+(use-package handlebars-mode :ensure t)
 
 (use-package glsl-mode :ensure t)
 
@@ -202,11 +202,11 @@
 (use-package visual-fill-column
   :ensure t)
 
-;;(use-package wgrep
-;;  :ensure t)
+(use-package wgrep
+ :ensure t)
 
-;;(use-package wgrep-ag
-;;  :ensure t)
+(use-package wgrep-ag
+ :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
