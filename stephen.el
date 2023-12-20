@@ -121,6 +121,8 @@
                          (require 'lsp-pyright)
                          (lsp-deferred))))
 
+(use-package pyvenv :ensure t)
+
 (use-package dap-mode :ensure t)
 
 (use-package lsp-ui :ensure t
