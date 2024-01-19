@@ -100,26 +100,27 @@
   :ensure t
   :commands (lsp lsp-deferred):hook
   (go-mode . lsp-deferred)
-  ;; (web-mode . lsp-deferred)
   (js-mode . lsp-deferred)
   (tsx-ts-mode . lsp-deferred)
   (rust-mode . lsp-deferred)
   (yaml-mode . lsp-deferred)
-  :config (setq lsp-rust-server 'rust-analyzer lsp-auto-guess-root
-                nil lsp-ui-doc-enable nil lsp-completion-mode
-                t):bind
+  :config (setq lsp-rust-server 'rust-analyzer
+                lsp-python-server 'pyright
+                lsp-auto-guess-root nil
+                lsp-ui-doc-enable nil
+                lsp-completion-mode t
+                lsp-semantic-tokens-enable t
+                )
+  (lsp-register-custom-settings
+ '(("gopls.semanticTokens" t t)
+   ("gopls.staticcheck" t t)))
+  :bind
   (:map lsp-mode-map
         ("C-c t" . lsp-find-definition)
         ("C-c C-t" . lsp-ui-peek-find-implementation)
         ("C-x C-a" . lsp-execute-code-action)))
 
 (use-package company :ensure t)
-
-(use-package lsp-pyright
-  :ensure t
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (lsp-deferred))))
 
 (use-package pyvenv :ensure t)
 
@@ -222,7 +223,9 @@
 ;; Configuring Built-in packages
 (setq js-indent-level 2)
 (add-hook 'python-mode-hook 'lsp)
-;; (define-key python-mode-map (kbd "C-c C-d") nil)
+(add-hook 'python-mode-hook
+          (lambda()
+            (local-unset-key (kbd "C-c C-d"))))
 
 ;; Custom Functions
 (defun copy-region-to-clipboard-mac ()
