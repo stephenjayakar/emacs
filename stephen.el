@@ -3,9 +3,9 @@
 (require 'package)
 ;;; Code:
 
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/")
-             t)
+(add-to-list
+ 'package-archives '("melpa" . "http://melpa.org/packages/")
+ t)
 (package-initialize)
 
 (setq debug-on-error 't)
@@ -35,11 +35,11 @@
   (if (file-exists-p filepath)
       (with-temp-buffer
         (insert-file-contents-literally filepath)
-        (buffer-substring-no-properties (point-min)
-                                        (point-max)))
+        (buffer-substring-no-properties (point-min) (point-max)))
     ""))
 
-(defvar openai-api-key (read-api-key-from-file "~/.emacs.d/secret/openai-key"))
+(defvar openai-api-key
+  (read-api-key-from-file "~/.emacs.d/secret/openai-key"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  PACKAGES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -52,11 +52,13 @@
 
 (use-package yasnippet-snippets :ensure t)
 
-(use-package go-mode
-  :ensure t
-  :init (setq gofmt-command '"goimports"):config
-  (add-hook 'before-save-hook 'gofmt-before-save)
-  (define-key go-mode-map (kbd "C-c C-d") nil))
+(use-package
+ go-mode
+ :ensure t
+ :init (setq gofmt-command ' "goimports")
+ :config
+ (add-hook 'before-save-hook 'gofmt-before-save)
+ (define-key go-mode-map (kbd "C-c C-d") nil))
 
 (use-package handlebars-mode :ensure t)
 
@@ -68,31 +70,34 @@
 
 (use-package add-node-modules-path :ensure t)
 
-(use-package prettier-js
-  :ensure t
-  :hook
-  (typescript-ts-base-mode . prettier-js-mode)
-  (typescript-ts-mode . prettier-js-mode))
+(use-package
+ prettier-js
+ :ensure t
+ :hook
+ (typescript-ts-base-mode . prettier-js-mode)
+ (typescript-ts-mode . prettier-js-mode))
 
 (use-package tide :ensure t)
 
 (use-package rust-mode :ensure t)
 
-(use-package protobuf-mode
-  :ensure t
-  :config
-  (add-hook 'protobuf-mode-hook
-    (lambda ()
-      (local-set-key (kbd "C-c n") 'proto-renumber))))
+(use-package
+ protobuf-mode
+ :ensure t
+ :config
+ (add-hook
+  'protobuf-mode-hook
+  (lambda () (local-set-key (kbd "C-c n") 'proto-renumber))))
 
 (use-package elixir-mode :ensure t)
 
 (use-package jenkinsfile-mode :ensure t)
 
-(use-package git-link
-  :ensure t
-  :config (setq git-link-default-branch "master"):bind
-  ("C-c g l" . git-link))
+(use-package
+ git-link
+ :ensure t
+ :config (setq git-link-default-branch "master")
+ :bind ("C-c g l" . git-link))
 
 (use-package yaml-mode :ensure t)
 
@@ -100,39 +105,46 @@
 ;; instead using treesitter. This is because lsp semantic tokens have
 ;; a significant delay before displaying, and it disables the normal
 ;; highlighting :/.
-(use-package lsp-mode
-  :ensure t
-  :commands (lsp lsp-deferred):hook
-  (go-ts-mode . lsp-deferred)
-  (js-ts-mode . lsp-deferred)
-  (typescript-ts-mode . lsp-deferred)
-  (rust-ts-mode . lsp-deferred)
-  (yaml-ts-mode . lsp-deferred)
-  (python-ts-mode . lsp-deferred)
-  :config (setq lsp-rust-server 'rust-analyzer
-                lsp-python-server 'pyright
-                lsp-auto-guess-root nil
-                lsp-ui-doc-enable nil
-                lsp-completion-mode t
-                lsp-enable-file-watchers nil
-                )
-  (add-to-list 'lsp-language-id-configuration '(python-ts-mode . "python"))
-  (add-to-list 'lsp-language-id-configuration '(go-ts-mode . "go"))
-  (lsp-register-client
- (make-lsp-client :new-connection (lsp-stdio-connection "pyright")
-                  :major-modes '(python-ts-mode)
-                  :server-id 'pyright))
-    (lsp-register-client
- (make-lsp-client :new-connection (lsp-stdio-connection "gopls")
-                  :major-modes '(go-ts-mode)
-                  :server-id 'gopls))
-  (lsp-register-custom-settings
-   ("gopls.staticcheck" t t))
-  :bind
-  (:map lsp-mode-map
-        ("C-c t" . lsp-find-definition)
-        ("C-c C-t" . lsp-ui-peek-find-implementation)
-        ("C-x C-a" . lsp-execute-code-action)))
+(use-package
+ lsp-mode
+ :ensure t
+ :commands (lsp lsp-deferred)
+ :hook
+ (go-ts-mode . lsp-deferred)
+ (js-ts-mode . lsp-deferred)
+ (typescript-ts-mode . lsp-deferred)
+ (rust-ts-mode . lsp-deferred)
+ (yaml-ts-mode . lsp-deferred)
+ (python-ts-mode . lsp-deferred)
+ :config
+ (setq
+  lsp-rust-server 'rust-analyzer
+  lsp-python-server 'pyright
+  lsp-auto-guess-root nil
+  lsp-ui-doc-enable nil
+  lsp-completion-mode t
+  lsp-enable-file-watchers nil)
+ (lsp-register-custom-settings '(("gopls.staticcheck" t t)))
+ (add-to-list
+  'lsp-language-id-configuration '(python-ts-mode . "python"))
+ (add-to-list 'lsp-language-id-configuration '(go-ts-mode . "go"))
+ (lsp-register-client
+  (make-lsp-client
+   :new-connection
+   (lsp-stdio-connection "pyright")
+   :major-modes '(python-ts-mode)
+   :server-id 'pyright))
+ (lsp-register-client
+  (make-lsp-client
+   :new-connection (lsp-stdio-connection "gopls")
+   :major-modes '(go-ts-mode)
+   :server-id 'gopls))
+ :bind
+ (:map
+  lsp-mode-map
+  ("C-c t" . lsp-find-definition)
+  ("C-c C-t" . lsp-ui-peek-find-implementation)
+  ("C-x C-a" . lsp-execute-code-action)))
 
 (use-package company :ensure t)
 
@@ -140,108 +152,106 @@
 
 (use-package dap-mode :ensure t)
 
-(use-package lsp-ui :ensure t
-  :commands lsp-ui-mode)
+(use-package lsp-ui :ensure t :commands lsp-ui-mode)
 
 (use-package counsel :ensure t)
 
-(use-package selectrum
-  :ensure t
-  :config (selectrum-mode +1))
+(use-package selectrum :ensure t :config (selectrum-mode +1))
 
-(use-package selectrum-prescient
-  :ensure t
-  :config (selectrum-prescient-mode +1))
+(use-package
+ selectrum-prescient
+ :ensure t
+ :config (selectrum-prescient-mode +1))
 
-(use-package undo-tree
-  :ensure t
-  :bind (("C-x u" . undo-tree-undo)):config
-  (global-undo-tree-mode))
+(use-package
+ undo-tree
+ :ensure t
+ :bind (("C-x u" . undo-tree-undo))
+ :config (global-undo-tree-mode))
 
 (use-package restart-emacs :ensure t)
 
-(use-package flycheck
-  :ensure t
-  :config (flycheck-add-mode 'typescript-tslint 'web-mode))
+(use-package
+ flycheck
+ :ensure t
+ :config (flycheck-add-mode 'typescript-tslint 'web-mode))
 
 (use-package string-inflection :ensure t)
 
-(use-package yafolding
-  :ensure t
-  :bind (("C-c RET" . yafolding-toggle-element)))
+(use-package
+ yafolding
+ :ensure t
+ :bind (("C-c RET" . yafolding-toggle-element)))
 
-(use-package fzf
-  :ensure t
-  :bind (("C-x f" . fzf-git)))
+(use-package fzf :ensure t :bind (("C-x f" . fzf-git)))
 
-(use-package material-theme
-  :ensure t)
+(use-package material-theme :ensure t)
 
-(use-package ace-jump-mode
-  :ensure t
-  :bind (("C-c SPC" . ace-jump-word-mode)
-         ("C-c C-x SPC" . ace-jump-char-mode)))
+(use-package
+ ace-jump-mode
+ :ensure t
+ :bind
+ (("C-c SPC" . ace-jump-word-mode)
+  ("C-c C-x SPC" . ace-jump-char-mode)))
 
-(use-package restclient
-  :ensure t
-  :config (add-to-list 'auto-mode-alist
-                       '("\\.http\\'" . restclient-mode)))
+(use-package
+ restclient
+ :ensure t
+ :config
+ (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode)))
 
-(use-package magit
-  :ensure t
-  :bind ("C-c g m" lambda
-         ()
-         (interactive)
-         (magit-find-file "master"
-                          (magit-file-relative-name))))
+(use-package
+ magit
+ :ensure t
+ :bind
+ ("C-c g m"
+  lambda
+  ()
+  (interactive)
+  (magit-find-file "master" (magit-file-relative-name))))
 
-(use-package projectile
-  :ensure t
-  :config
-  (setq projectile-enable-caching t)
-  (projectile-mode +1):bind-keymap
-  ("C-c p" . projectile-command-map))
+(use-package
+ projectile
+ :ensure t
+ :config
+ (setq projectile-enable-caching t)
+ (projectile-mode +1)
+ :bind-keymap ("C-c p" . projectile-command-map))
 
 (use-package gruvbox-theme :ensure t)
 
-(use-package srefactor
-  :ensure t
-  :config (require 'srefactor-lisp))
+(use-package srefactor :ensure t :config (require 'srefactor-lisp))
 
-(use-package gptel
-  :ensure t
-  :config
-  (setq gptel-api-key openai-api-key)
-  (setq-default gptel-model "gpt-4-1106-preview"))
+(use-package
+ gptel
+ :ensure t
+ :config
+ (setq gptel-api-key openai-api-key)
+ (setq-default gptel-model "gpt-4-1106-preview"))
 
-(use-package visual-fill-column
-  :ensure t)
+(use-package visual-fill-column :ensure t)
 
-(use-package wgrep
- :ensure t)
+(use-package wgrep :ensure t)
 
-(use-package wgrep-ag
- :ensure t)
+(use-package wgrep-ag :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Treesitter config
 (setq major-mode-remap-alist
- '((yaml-mode . yaml-ts-mode)
-   (bash-mode . bash-ts-mode)
-   (js2-mode . js-ts-mode)
-   (typescript-mode . typescript-ts-mode)
-   (json-mode . json-ts-mode)
-   (css-mode . css-ts-mode)
-   (go-mode . go-ts-mode)
-   (python-mode . python-ts-mode)))
+      '((yaml-mode . yaml-ts-mode)
+        (bash-mode . bash-ts-mode)
+        (js2-mode . js-ts-mode)
+        (typescript-mode . typescript-ts-mode)
+        (json-mode . json-ts-mode)
+        (css-mode . css-ts-mode)
+        (go-mode . go-ts-mode)
+        (python-mode . python-ts-mode)))
 
 
 ;; Emacs 29 -- Set up tsx-ts-mode
-(add-to-list 'auto-mode-alist
-             '("\\.ts\\'" . tsx-ts-mode))
-(add-to-list 'auto-mode-alist
-             '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
@@ -249,21 +259,17 @@
 ;; Configuring Built-in packages
 (setq js-indent-level 2)
 (add-hook 'python-mode-hook 'lsp)
-(add-hook 'python-mode-hook
-          (lambda()
-            (local-unset-key (kbd "C-c C-d"))))
+(add-hook
+ 'python-mode-hook (lambda () (local-unset-key (kbd "C-c C-d"))))
 (add-hook 'python-ts-mode-hook 'lsp)
-(add-hook 'python-ts-mode-hook
-          (lambda()
-            (local-unset-key (kbd "C-c C-d"))))
+(add-hook
+ 'python-ts-mode-hook (lambda () (local-unset-key (kbd "C-c C-d"))))
 
 ;; Custom Functions
 (defun copy-region-to-clipboard-mac ()
   "Copies the selected region to system clipboard."
   (interactive)
-  (shell-command-on-region (region-beginning)
-                           (region-end)
-                           "pbcopy"))
+  (shell-command-on-region (region-beginning) (region-end) "pbcopy"))
 
 ;; Moving backup files out of working directory
 (setq backup-directory-alist '((".*" . "~/.Trash")))
@@ -272,15 +278,17 @@
 ;; Disabling creating lockfiles
 (setq create-lockfiles nil)
 ;; Moving the backup files
-(defvar user-temporary-file-directory (concat temporary-file-directory user-login-name
-                                              "/"))
-(make-directory user-temporary-file-directory
-                t)
+(defvar user-temporary-file-directory
+  (concat temporary-file-directory user-login-name "/"))
+(make-directory user-temporary-file-directory t)
 (setq backup-by-copying t)
-(setq backup-directory-alist `(("." . ,user-temporary-file-directory)
-                               (,tramp-file-name-regexp nil)))
-(setq auto-save-list-file-prefix (concat user-temporary-file-directory ".auto-saves-"))
-(setq auto-save-file-name-transforms `((".*" ,user-temporary-file-directory t)))
+(setq backup-directory-alist
+      `(("." . ,user-temporary-file-directory)
+        (,tramp-file-name-regexp nil)))
+(setq auto-save-list-file-prefix
+      (concat user-temporary-file-directory ".auto-saves-"))
+(setq auto-save-file-name-transforms
+      `((".*" ,user-temporary-file-directory t)))
 
 (delete-selection-mode t)
 
@@ -292,80 +300,61 @@
 ;;; Advice
 ;; I'm not really sure what advice is
 ;; https://www.reddit.com/r/emacs/comments/rlli0u/whats_your_favorite_defadvice/
-(defadvice kill-ring-save
-    (before slick-copy activate compile)
+(defadvice kill-ring-save (before slick-copy activate compile)
   "When called interactively with no active region, copy a single line instead."
   (interactive (if mark-active
-                   (list (region-beginning)
-                         (region-end))
+                   (list (region-beginning) (region-end))
                  (message "Single line killed")
-                 (list (line-beginning-position)
-                       (line-beginning-position 2)))))
+                 (list
+                  (line-beginning-position)
+                  (line-beginning-position 2)))))
 
-(defadvice kill-region
-    (before slick-cut activate compile)
+(defadvice kill-region (before slick-cut activate compile)
   "When called interactively with no active region, kill a single line instead."
   (interactive (if mark-active
-                   (list (region-beginning)
-                         (region-end))
-                 (list (line-beginning-position)
-                       (line-beginning-position 2)))))
+                   (list (region-beginning) (region-end))
+                 (list
+                  (line-beginning-position)
+                  (line-beginning-position 2)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  KEYBINDS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(bind-key (kbd "C-<tab>")
-          'next-window-any-frame)
+(bind-key (kbd "C-<tab>") 'next-window-any-frame)
 (with-eval-after-load 'magit-status
   (define-key magit-status-mode-map (kbd "C-<tab>") nil))
-(bind-key (kbd "C-S-<tab>")
-                'previous-window-any-frame)
-(bind-key (kbd "C-x o")
-                nil)
+(bind-key (kbd "C-S-<tab>") 'previous-window-any-frame)
+(bind-key (kbd "C-x o") nil)
 
 ;; Others
-(global-set-key (kbd "C-j")
-                'newline-and-indent)
-(global-set-key (kbd "M-h")
-                'backward-kill-word)
-(global-set-key (kbd "C-x C-j")
-                'previous-buffer)
-(global-set-key (kbd "C-x C-l")
-                'next-buffer)
-(global-set-key (kbd "C-x l")
-                'goto-line)
-(global-set-key (kbd "C-x C-r")
-                'revert-buffer)
-(global-set-key (kbd "C-x C-e")
-                'eval-last-sexp)
-(global-set-key (kbd "C-c r")
-                'replace-string)
-(global-set-key (kbd "C-c d")
-                (lambda ()
-                  (interactive)
-                  (point-to-register 'f)))
-(global-set-key (kbd "C-c C-d")
-                (lambda ()
-                  (interactive)
-                  (jump-to-register 'f)))
-(global-set-key (kbd "C-x M-s")
-                (subword-mode))
+(global-set-key (kbd "C-j") 'newline-and-indent)
+(global-set-key (kbd "M-h") 'backward-kill-word)
+(global-set-key (kbd "C-x C-j") 'previous-buffer)
+(global-set-key (kbd "C-x C-l") 'next-buffer)
+(global-set-key (kbd "C-x l") 'goto-line)
+(global-set-key (kbd "C-x C-r") 'revert-buffer)
+(global-set-key (kbd "C-x C-e") 'eval-last-sexp)
+(global-set-key (kbd "C-c r") 'replace-string)
+(global-set-key
+ (kbd "C-c d")
+ (lambda ()
+   (interactive)
+   (point-to-register 'f)))
+(global-set-key
+ (kbd "C-c C-d")
+ (lambda ()
+   (interactive)
+   (jump-to-register 'f)))
+(global-set-key (kbd "C-x M-s") (subword-mode))
 
 ;; Tab management
-(global-set-key (kbd "C-M-<tab>")
-                'tab-bar-switch-to-next-tab)
-(global-set-key (kbd "C-M-S-<tab>")
-                'tab-bar-switch-to-prev-tab)
-(global-set-key (kbd "s-}")
-                'tab-bar-switch-to-next-tab)
-(global-set-key (kbd "s-{")
-                'tab-bar-switch-to-prev-tab)
-(global-set-key (kbd "s-t")
-                'tab-bar-new-tab)
-(global-set-key (kbd "s-w")
-                'tab-bar-close-tab)
-(global-set-key (kbd "C-\\")
-                'tiling-cycle)
+(global-set-key (kbd "C-M-<tab>") 'tab-bar-switch-to-next-tab)
+(global-set-key (kbd "C-M-S-<tab>") 'tab-bar-switch-to-prev-tab)
+(global-set-key (kbd "s-}") 'tab-bar-switch-to-next-tab)
+(global-set-key (kbd "s-{") 'tab-bar-switch-to-prev-tab)
+(global-set-key (kbd "s-t") 'tab-bar-new-tab)
+(global-set-key (kbd "s-w") 'tab-bar-close-tab)
+(global-set-key (kbd "C-\\") 'tiling-cycle)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  UI ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -389,8 +378,7 @@
 (setq-default show-trailing-whitespace t)
 
 ;; MARKDOWN mode configuration -- I want this to look similar to Notion
-(setq-default markdown-fontify-code-blocks-natively
-              t)
+(setq-default markdown-fontify-code-blocks-natively t)
 
 (defun clear-whitespace-and-newline-and-indent ()
   (interactive)
@@ -411,10 +399,8 @@
            name))
   (goto-char (point-max))
   (newline)
-  (insert
-   (format "message %sRequest {}\n" name))
-  (insert
-   (format "message %sResponse {}\n" name)))
+  (insert (format "message %sRequest {}\n" name))
+  (insert (format "message %sResponse {}\n" name)))
 
 (defun proto-renumber ()
   "Renumber selected protobuf fields in ascending order."
@@ -443,8 +429,10 @@
 ;; around the inline code.
 (defun my-markdown-mode-hook ()
   "Set a specific font for `markdown-mode'."
-  (face-remap-add-relative 'default :family "Helvetica Neue"
-                           :height 200)
+  (face-remap-add-relative
+   'default
+   :family "Helvetica Neue"
+   :height 200)
   (visual-line-mode 1)
   (visual-fill-column-mode)
   (setq fill-column 100)
