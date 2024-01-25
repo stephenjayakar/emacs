@@ -96,24 +96,38 @@
 
 (use-package yaml-mode :ensure t)
 
+;; Note to self: I decided against using lsp semantic tokens and am
+;; instead using treesitter. This is because lsp semantic tokens have
+;; a significant delay before displaying, and it disables the normal
+;; highlighting :/.
 (use-package lsp-mode
   :ensure t
   :commands (lsp lsp-deferred):hook
-  (go-mode . lsp-deferred)
-  (js-mode . lsp-deferred)
-  (tsx-ts-mode . lsp-deferred)
-  (rust-mode . lsp-deferred)
-  (yaml-mode . lsp-deferred)
+  (go-ts-mode . lsp-deferred)
+  (js-ts-mode . lsp-deferred)
+  (typescript-ts-mode . lsp-deferred)
+  (rust-ts-mode . lsp-deferred)
+  (yaml-ts-mode . lsp-deferred)
+  (python-ts-mode . lsp-deferred)
   :config (setq lsp-rust-server 'rust-analyzer
                 lsp-python-server 'pyright
                 lsp-auto-guess-root nil
                 lsp-ui-doc-enable nil
                 lsp-completion-mode t
-                lsp-semantic-tokens-enable t
+                lsp-enable-file-watchers nil
                 )
+  (add-to-list 'lsp-language-id-configuration '(python-ts-mode . "python"))
+  (add-to-list 'lsp-language-id-configuration '(go-ts-mode . "go"))
+  (lsp-register-client
+ (make-lsp-client :new-connection (lsp-stdio-connection "pyright")
+                  :major-modes '(python-ts-mode)
+                  :server-id 'pyright))
+    (lsp-register-client
+ (make-lsp-client :new-connection (lsp-stdio-connection "gopls")
+                  :major-modes '(go-ts-mode)
+                  :server-id 'gopls))
   (lsp-register-custom-settings
- '(("gopls.semanticTokens" t t)
-   ("gopls.staticcheck" t t)))
+   ("gopls.staticcheck" t t))
   :bind
   (:map lsp-mode-map
         ("C-c t" . lsp-find-definition)
@@ -211,6 +225,18 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Treesitter config
+(setq major-mode-remap-alist
+ '((yaml-mode . yaml-ts-mode)
+   (bash-mode . bash-ts-mode)
+   (js2-mode . js-ts-mode)
+   (typescript-mode . typescript-ts-mode)
+   (json-mode . json-ts-mode)
+   (css-mode . css-ts-mode)
+   (go-mode . go-ts-mode)
+   (python-mode . python-ts-mode)))
+
+
 ;; Emacs 29 -- Set up tsx-ts-mode
 (add-to-list 'auto-mode-alist
              '("\\.ts\\'" . tsx-ts-mode))
@@ -224,6 +250,10 @@
 (setq js-indent-level 2)
 (add-hook 'python-mode-hook 'lsp)
 (add-hook 'python-mode-hook
+          (lambda()
+            (local-unset-key (kbd "C-c C-d"))))
+(add-hook 'python-ts-mode-hook 'lsp)
+(add-hook 'python-ts-mode-hook
           (lambda()
             (local-unset-key (kbd "C-c C-d"))))
 
