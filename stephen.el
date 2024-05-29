@@ -8,7 +8,9 @@
  t)
 (package-initialize)
 
-(setq debug-on-error 't)
+;; (setq debug-on-error 't)
+
+(setq warning-minimum-level :error)
 
 ;; (exec-path-from-shell-initialize)
 
@@ -26,6 +28,16 @@
 ;; (setq dnd-save-directory "images")
 ;; (setq dnd-view-inline t)
 ;; (setq dnd-save-buffer-name nil)
+
+;; Treesitter config
+(setq major-mode-remap-alist
+      '((yaml-mode . yaml-ts-mode)
+        (bash-mode . bash-ts-mode)
+        (js2-mode . js-ts-mode)
+        (typescript-mode . typescript-ts-mode)
+        (json-mode . json-ts-mode)
+        (css-mode . css-ts-mode)
+        (python-mode . python-ts-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  PRIVATE KEYS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -110,7 +122,7 @@
  :ensure t
  :commands (lsp lsp-deferred)
  :hook
- (go-ts-mode . lsp-deferred)
+ (go-mode . lsp-deferred)
  (js-ts-mode . lsp-deferred)
  (typescript-ts-mode . lsp-deferred)
  (rust-ts-mode . lsp-deferred)
@@ -127,24 +139,15 @@
  (lsp-register-custom-settings '(("gopls.staticcheck" t t)))
  (add-to-list
   'lsp-language-id-configuration '(python-ts-mode . "python"))
- (add-to-list 'lsp-language-id-configuration '(go-ts-mode . "go"))
- (lsp-register-client
-  (make-lsp-client
-   :new-connection
-   (lsp-stdio-connection "pyright")
-   :major-modes '(python-ts-mode)
-   :server-id 'pyright))
- (lsp-register-client
-  (make-lsp-client
-   :new-connection (lsp-stdio-connection "gopls")
-   :major-modes '(go-ts-mode)
-   :server-id 'gopls))
  :bind
  (:map
   lsp-mode-map
   ("C-c t" . lsp-find-definition)
   ("C-c C-t" . lsp-ui-peek-find-implementation)
   ("C-x C-a" . lsp-execute-code-action)))
+
+(use-package lsp-pyright
+  :ensure t)
 
 (use-package company :ensure t)
 
@@ -227,7 +230,7 @@
  :ensure t
  :config
  (setq gptel-api-key openai-api-key)
- (setq-default gptel-model "gpt-4-1106-preview"))
+ (setq-default gptel-model "gpt-4-0125-preview"))
 
 (use-package visual-fill-column :ensure t)
 
@@ -236,18 +239,6 @@
 (use-package wgrep-ag :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Treesitter config
-(setq major-mode-remap-alist
-      '((yaml-mode . yaml-ts-mode)
-        (bash-mode . bash-ts-mode)
-        (js2-mode . js-ts-mode)
-        (typescript-mode . typescript-ts-mode)
-        (json-mode . json-ts-mode)
-        (css-mode . css-ts-mode)
-        (go-mode . go-ts-mode)
-        (python-mode . python-ts-mode)))
-
 
 ;; Emacs 29 -- Set up tsx-ts-mode
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . tsx-ts-mode))
@@ -433,13 +424,13 @@
    'default
    :family "Helvetica Neue"
    :height 200)
-  (visual-line-mode 1)
   (visual-fill-column-mode)
   (setq fill-column 100)
   (setq visual-fill-column-center-text t)
   (markdown-display-inline-images)
   (setq markdown-display-remote-images t)
   (setq markdown-max-image-size '(800 . 800))
+  (setq word-wrap 't)
   (display-line-numbers-mode 0)
   (local-set-key (kbd "RET") 'clear-whitespace-and-newline-and-indent)
   (adaptive-wrap-prefix-mode)
