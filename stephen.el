@@ -36,8 +36,8 @@
         (js2-mode . js-ts-mode)
         (typescript-mode . typescript-ts-mode)
         (json-mode . json-ts-mode)
-        (css-mode . css-ts-mode)
-        (python-mode . python-ts-mode)))
+        (css-mode . css-ts-mode)))
+;;        (python-mode . python-ts-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  PRIVATE KEYS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -127,18 +127,18 @@
  (typescript-ts-mode . lsp-deferred)
  (rust-ts-mode . lsp-deferred)
  (yaml-ts-mode . lsp-deferred)
- (python-ts-mode . lsp-deferred)
+ ;; (python-ts-mode . lsp-deferred)
  :config
  (setq
   lsp-rust-server 'rust-analyzer
-  lsp-python-server 'pyright
+  ;; lsp-python-server 'pyright
   lsp-auto-guess-root nil
   lsp-ui-doc-enable nil
   lsp-completion-mode t
   lsp-enable-file-watchers nil)
- (lsp-register-custom-settings '(("gopls.staticcheck" t t)))
- (add-to-list
-  'lsp-language-id-configuration '(python-ts-mode . "python"))
+ ;; (lsp-register-custom-settings '(("gopls.staticcheck" t t)))
+ ;; (add-to-list
+ ;;  'lsp-language-id-configuration '(python-ts-mode . "python"))
  :bind
  (:map
   lsp-mode-map
@@ -146,8 +146,8 @@
   ("C-c C-t" . lsp-ui-peek-find-implementation)
   ("C-x C-a" . lsp-execute-code-action)))
 
-(use-package lsp-pyright
-  :ensure t)
+;; (use-package lsp-pyright
+;;   :ensure t)
 
 (use-package company :ensure t)
 
