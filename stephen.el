@@ -170,7 +170,9 @@
  undo-tree
  :ensure t
  :bind (("C-x u" . undo-tree-undo))
- :config (global-undo-tree-mode))
+ :config
+          (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+          (global-undo-tree-mode))
 
 (use-package restart-emacs :ensure t)
 
