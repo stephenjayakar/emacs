@@ -242,6 +242,19 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; GPTEL CONFIG
+(defun gptel-add-with-buffer ()
+  "Add the current file as context and open a ChatGPT buffer on the right."
+  (interactive)
+  (gptel-add)
+  ;; Open ChatGPT buffer on the right
+  (let* ((buffer (gptel (generate-new-buffer-name "*ChatGPT*")))
+         (window (display-buffer-in-side-window buffer '((side . right)))))
+    (set-window-dedicated-p window t)
+    (select-window window)))
+
+(global-set-key (kbd "s-l") 'gptel-add-with-buffer)
+
 ;; Emacs 29 -- Set up tsx-ts-mode
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
@@ -319,7 +332,7 @@
 (bind-key (kbd "C-S-<tab>") 'previous-window-any-frame)
 (bind-key (kbd "C-x o") nil)
 
-;; Others
+
 (global-set-key (kbd "C-j") 'newline-and-indent)
 (global-set-key (kbd "M-h") 'backward-kill-word)
 (global-set-key (kbd "C-x C-j") 'previous-buffer)
