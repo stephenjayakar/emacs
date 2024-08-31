@@ -232,7 +232,7 @@
  :ensure t
  :config
  (setq gptel-api-key openai-api-key)
- (setq-default gptel-model "gpt-4-0125-preview"))
+ (setq-default gptel-model "gpt-4o"))
 
 (use-package visual-fill-column :ensure t)
 
