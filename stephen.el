@@ -242,6 +242,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(with-eval-after-load 'lsp-mode
+  (define-key lsp-mode-map (kbd "s-l") nil))
+
+
 ;; GPTEL CONFIG
 (defun gptel-add-with-buffer ()
   "Add the current file as context and open a ChatGPT buffer on the right."
@@ -383,17 +387,6 @@
 ;; Whitespace
 (setq-default show-trailing-whitespace t)
 
-;; MARKDOWN mode configuration -- I want this to look similar to Notion
-(setq-default markdown-fontify-code-blocks-natively t)
-
-(defun clear-whitespace-and-newline-and-indent ()
-  (interactive)
-  (markdown-enter-key)
-  (previous-line)
-  (end-of-line)
-  (delete-horizontal-space)
-  (next-line))
-
 (defun proto-add-rpc (name)
   "Create a template for adding gRPC services and messages to .proto files"
   (interactive "sEnter the function name: ")
@@ -422,14 +415,17 @@
         (widen))
     (message "You must select a region first!")))
 
-;; Defer custom loading if there's a daemon -- otherwise just load it.
-(defun load-custom (frame)
-  (select-frame frame)
-  (load-file "~/.emacs.d/custom.el"))
-(if (daemonp)
-    (add-hook 'after-make-frame-functions #'load-custom)
-  (load-file "~/.emacs.d/custom.el"))
+;; MARKDOWN mode configuration -- I want this to look similar to Notion
+(setq-default markdown-fontify-code-blocks-natively t)
 
+(defun clear-whitespace-and-newline-and-indent ()
+  (interactive)
+  (markdown-enter-key)
+  (previous-line)
+  (end-of-line)
+  (delete-horizontal-space)
+  (next-line))
+  
 ;; TODO: Figure out if I can move the font configurations -> customize
 ;; Note: I moved the header scaling -> customize as well as the box
 ;; around the inline code.
@@ -452,6 +448,14 @@
   (define-key markdown-mode-map (kbd "C-c C-d") nil))
 
 (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
+
+;; Defer custom loading if there's a daemon -- otherwise just load it.
+(defun load-custom (frame)
+  (select-frame frame)
+  (load-file "~/.emacs.d/custom.el"))
+(if (daemonp)
+    (add-hook 'after-make-frame-functions #'load-custom)
+  (load-file "~/.emacs.d/custom.el"))
 
 (provide 'stephen)
 
