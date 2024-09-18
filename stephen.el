@@ -377,6 +377,12 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
+;; auto balance
+(seq-doseq (fn (list #'split-window #'delete-window))
+  (advice-add fn
+              :after
+              #'(lambda (&rest args) (balance-windows))))
+
 ;; yas
 (yas-global-mode)
 
@@ -425,7 +431,7 @@
   (end-of-line)
   (delete-horizontal-space)
   (next-line))
-  
+
 ;; TODO: Figure out if I can move the font configurations -> customize
 ;; Note: I moved the header scaling -> customize as well as the box
 ;; around the inline code.
