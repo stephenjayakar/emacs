@@ -230,17 +230,27 @@
 
 (use-package srefactor :ensure t :config (require 'srefactor-lisp))
 
+;; Configure GPTEL package
 (use-package gptel
   :ensure t
   :config
-  (setq gptel-api-key openai-api-key)
-  ;; Default to using GPT-4o
-  (setq gptel-model 'gpt-4o)
-  ;; Keep your existing configurations
+  ;; Set default model and API key for GPTEL
+  (setq gptel-api-key openai-api-key
+        gptel-model 'gpt-4o)
+
+  ;; Add Anthropic Claude provider
   (gptel-make-anthropic "Claude"
     :stream t
     :key anthropic-api-key
-    :models '(claude-3-7-sonnet-20250219)))
+    :models '(claude-3-7-sonnet-20250219))
+
+  ;; Experimental OpenAI provider setup
+  (gptel-make-openai "OpenAI Experimental"
+    :host "api.openai.com"
+    :endpoint "/v1/chat/completions"
+    :stream t
+    :key openai-api-key
+    :models '(gpt-4.5-preview)))
 
 (use-package visual-fill-column :ensure t)
 
@@ -254,31 +264,16 @@
   (define-key lsp-mode-map (kbd "s-l") nil))
 
 ;; GPTEL CONFIG
-(defun gptel-add-with-buffer ()
-  "Add the current file as context and open a ChatGPT buffer on the right."
-  (interactive)
-  (gptel-add)
-  ;; Open ChatGPT buffer on the right
-  (let* ((buffer (gptel (generate-new-buffer-name "*ChatGPT*")))
-         (window (display-buffer-in-side-window buffer '((side . right)))))
-    (set-window-dedicated-p window t)
-    (select-window window)))
-
-(defun my-gptel-combined-command ()
-  "Run `gptel-add-with-buffer` and `gptel-context-remove-all` sequentially."
+(defun gptel-add-and-open-buffer ()
+  "Add current file context to GPTEL and open ChatGPT buffer on the right side."
   (interactive)
   (gptel-context-remove-all)
-  (gptel-add-with-buffer))
+  (gptel-add)
+  (let ((buffer (gptel (generate-new-buffer-name "*ChatGPT*"))))
+    (display-buffer-in-side-window buffer '((side . right)))
+    (select-window (get-buffer-window buffer))))
 
-(global-set-key (kbd "s-l") 'my-gptel-combined-command)
-
-;; DeepSeek offers an OpenAI compatible API
-(gptel-make-openai "OpenAI Experimental"       ;Any name you want
-  :host "api.openai.com"
-  :endpoint "/v1/chat/completions"
-  :stream t
-  :key openai-api-key
-  :models '(gpt-4.5-preview))
+(global-set-key (kbd "s-l") #'gptel-add-and-open-buffer)
 
 ;; Emacs 29 -- Set up tsx-ts-mode
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . tsx-ts-mode))
