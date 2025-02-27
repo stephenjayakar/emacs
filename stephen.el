@@ -53,6 +53,9 @@
 (defvar openai-api-key
   (read-api-key-from-file "~/.emacs.d/secret/openai-key"))
 
+(defvar anthropic-api-key
+  (read-api-key-from-file "~/.emacs.d/secret/ant-key"))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  PACKAGES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -227,13 +230,22 @@
 
 (use-package srefactor :ensure t :config (require 'srefactor-lisp))
 
-(use-package
- gptel
- :ensure t
- :config
- (setq gptel-api-key openai-api-key)
- (setq-default gptel-model "gpt-4o"))
-
+(use-package gptel
+  :ensure t
+  :config
+  (setq gptel-api-key openai-api-key)
+  (setq gptel-model 'gpt-4o)
+  ;; Add a new model to gptel--openai-models
+  (let ((new-model (list 'gpt-4.5-preview 
+                         :description "Experimental preview model for advanced tasks"
+                         :capabilities '(media tool-use json url)
+                         :mime-types '("image/jpeg" "image/png" "image/gif" "image/webp")
+                         :context-window 130
+                         :input-cost 3
+                         :output-cost 12
+                         :cutoff-date "2023-12"
+                         :request-params '(:experimental t))))
+    (setq gptel--openai-models (append gptel--openai-models (list new-model)))))
 (use-package visual-fill-column :ensure t)
 
 (use-package wgrep :ensure t)
@@ -247,6 +259,11 @@
 
 
 ;; GPTEL CONFIG
+(gptel-make-anthropic "Claude"          ;Any name you want
+  :stream t                             ;Streaming responses
+  :key anthropic-api-key
+  :models '(claude-3-7-sonnet-20250219))
+
 (defun gptel-add-with-buffer ()
   "Add the current file as context and open a ChatGPT buffer on the right."
   (interactive)
@@ -257,7 +274,13 @@
     (set-window-dedicated-p window t)
     (select-window window)))
 
-(global-set-key (kbd "s-l") 'gptel-add-with-buffer)
+(defun my-gptel-combined-command ()
+  "Run `gptel-add-with-buffer` and `gptel-context-remove-all` sequentially."
+  (interactive)
+  (gptel-context-remove-all)
+  (gptel-add-with-buffer))
+
+(global-set-key (kbd "s-l") 'my-gptel-combined-command)
 
 ;; Emacs 29 -- Set up tsx-ts-mode
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . tsx-ts-mode))
@@ -336,7 +359,6 @@
 (bind-key (kbd "C-S-<tab>") 'previous-window-any-frame)
 (bind-key (kbd "C-x o") nil)
 
-
 (global-set-key (kbd "C-j") 'newline-and-indent)
 (global-set-key (kbd "M-h") 'backward-kill-word)
 (global-set-key (kbd "C-x C-j") 'previous-buffer)
@@ -356,6 +378,8 @@
    (interactive)
    (jump-to-register 'f)))
 (global-set-key (kbd "C-x M-s") (subword-mode))
+
+(define-key c-mode-map (kbd "C-c C-d") nil)
 
 ;; Tab management
 (global-set-key (kbd "C-M-<tab>") 'tab-bar-switch-to-next-tab)
