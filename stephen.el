@@ -234,18 +234,14 @@
   :ensure t
   :config
   (setq gptel-api-key openai-api-key)
+  ;; Default to using GPT-4o
   (setq gptel-model 'gpt-4o)
-  ;; Add a new model to gptel--openai-models
-  (let ((new-model (list 'gpt-4.5-preview 
-                         :description "Experimental preview model for advanced tasks"
-                         :capabilities '(media tool-use json url)
-                         :mime-types '("image/jpeg" "image/png" "image/gif" "image/webp")
-                         :context-window 130
-                         :input-cost 3
-                         :output-cost 12
-                         :cutoff-date "2023-12"
-                         :request-params '(:experimental t))))
-    (setq gptel--openai-models (append gptel--openai-models (list new-model)))))
+  ;; Keep your existing configurations
+  (gptel-make-anthropic "Claude"
+    :stream t
+    :key anthropic-api-key
+    :models '(claude-3-7-sonnet-20250219)))
+
 (use-package visual-fill-column :ensure t)
 
 (use-package wgrep :ensure t)
@@ -257,13 +253,7 @@
 (with-eval-after-load 'lsp-mode
   (define-key lsp-mode-map (kbd "s-l") nil))
 
-
 ;; GPTEL CONFIG
-(gptel-make-anthropic "Claude"          ;Any name you want
-  :stream t                             ;Streaming responses
-  :key anthropic-api-key
-  :models '(claude-3-7-sonnet-20250219))
-
 (defun gptel-add-with-buffer ()
   "Add the current file as context and open a ChatGPT buffer on the right."
   (interactive)
@@ -281,6 +271,14 @@
   (gptel-add-with-buffer))
 
 (global-set-key (kbd "s-l") 'my-gptel-combined-command)
+
+;; DeepSeek offers an OpenAI compatible API
+(gptel-make-openai "OpenAI Experimental"       ;Any name you want
+  :host "api.openai.com"
+  :endpoint "/v1/chat/completions"
+  :stream t
+  :key openai-api-key
+  :models '(gpt-4.5-preview))
 
 ;; Emacs 29 -- Set up tsx-ts-mode
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . tsx-ts-mode))
