@@ -250,7 +250,8 @@
     :endpoint "/v1/chat/completions"
     :stream t
     :key openai-api-key
-    :models '(gpt-4.5-preview)))
+    :models '(gpt-4.5-preview))
+  (global-set-key (kbd "s-m") #'gptel-menu))
 
 (use-package visual-fill-column :ensure t)
 
