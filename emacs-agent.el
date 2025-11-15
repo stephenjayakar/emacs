@@ -1,4 +1,4 @@
-;;; emacs-agent-tools.el --- Tools for agentic Emacs control -*- lexical-binding: t; -*-
+;;; emacs-agent.el --- Tools for agentic Emacs control -*- lexical-binding: t; -*-
 
 (gptel-make-tool
  :name "read_buffer"
@@ -307,3 +307,22 @@
                :type string
                :description "The symbol name to find references for"))
  :category "emacs")
+
+;;; Custom gptel directive for emacs-agent
+
+(defun emacs-agent--load-prompt ()
+  "Load the emacs-agent prompt from ~/.emacs.d/emacs-agent-prompt.md."
+  (let ((prompt-file (expand-file-name "~/.emacs.d/emacs-agent-prompt.md")))
+    (if (file-exists-p prompt-file)
+        (with-temp-buffer
+          (insert-file-contents prompt-file)
+          (buffer-string))
+      "You are an AI agent running inside Emacs with full control over the editor.")))
+
+;; Add the emacs-agent directive to gptel-directives
+(with-eval-after-load 'gptel
+  (add-to-list 'gptel-directives
+               '(emacs-agent . emacs-agent--load-prompt)))
+
+(provide 'emacs-agent)
+;;; emacs-agent.el ends here
