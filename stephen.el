@@ -29,6 +29,14 @@
 ;; (setq dnd-view-inline t)
 ;; (setq dnd-save-buffer-name nil)
 
+;; Emacs 29 -- Set up tsx-ts-mode
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.cjs\\'" . js-mode))
+(add-to-list 'auto-mode-alist '("\\.prisma\\'" . prisma-ts-mode))
+
+
+
 ;; Treesitter config
 (setq major-mode-remap-alist
       '((yaml-mode . yaml-ts-mode)
@@ -38,6 +46,25 @@
         (json-mode . json-ts-mode)
         (css-mode . css-ts-mode)))
 ;;        (python-mode . python-ts-mode)))
+
+;; Source list from https://www.masteringemacs.org/article/how-to-get-started-tree-sitter
+(setq treesit-language-source-alist
+      '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+        (prisma "https://github.com/victorhqc/tree-sitter-prisma")
+        (cmake "https://github.com/uyha/tree-sitter-cmake")
+        (css "https://github.com/tree-sitter/tree-sitter-css")
+        (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+        (go "https://github.com/tree-sitter/tree-sitter-go")
+        (html "https://github.com/tree-sitter/tree-sitter-html")
+        (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+        (json "https://github.com/tree-sitter/tree-sitter-json")
+        (make "https://github.com/alemuller/tree-sitter-make")
+        (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+        (python "https://github.com/tree-sitter/tree-sitter-python")
+        (toml "https://github.com/tree-sitter/tree-sitter-toml")
+        (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+        (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+        (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  PRIVATE KEYS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -85,12 +112,13 @@
 
 (use-package add-node-modules-path :ensure t)
 
-(use-package
- prettier-js
- :ensure t
- :hook
- (typescript-ts-base-mode . prettier-js-mode)
- (typescript-ts-mode . prettier-js-mode))
+(use-package prettier-js
+  :ensure t
+  :hook ((typescript-ts-base-mode . prettier-js-mode)
+         (typescript-ts-mode . prettier-js-mode)
+         (js-ts-mode . prettier-js-mode)
+         (js-mode . prettier-js-mode)
+         (jsx-mode . prettier-js-mode)))
 
 (use-package tide :ensure t)
 
@@ -216,7 +244,7 @@
   lambda
   ()
   (interactive)
-  (magit-find-file "master" (magit-file-relative-name))))
+  (magit-find-file "main" (magit-file-relative-name))))
 
 (use-package
  projectile
@@ -236,13 +264,12 @@
   :config
   ;; Set default model and API key for GPTEL
   (setq gptel-api-key openai-api-key
-        gptel-model 'gpt-4o)
+        gptel-model 'gpt-4.1)
 
   ;; Add Anthropic Claude provider
   (gptel-make-anthropic "Claude"
     :stream t
-    :key anthropic-api-key
-    :models '(claude-3-7-sonnet-20250219))
+    :key anthropic-api-key)
 
   ;; Experimental OpenAI provider setup
   (gptel-make-openai "OpenAI Experimental"
@@ -250,7 +277,7 @@
     :endpoint "/v1/chat/completions"
     :stream t
     :key openai-api-key
-    :models '(gpt-4.5-preview))
+    :models '(gpt-4.1))
   (global-set-key (kbd "s-m") #'gptel-menu))
 
 (use-package visual-fill-column :ensure t)
@@ -275,10 +302,6 @@
     (select-window (get-buffer-window buffer))))
 
 (global-set-key (kbd "s-l") #'gptel-add-and-open-buffer)
-
-;; Emacs 29 -- Set up tsx-ts-mode
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . tsx-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
@@ -318,11 +341,6 @@
       `((".*" ,user-temporary-file-directory t)))
 
 (delete-selection-mode t)
-
-;; prettier config
-;; (eval-after-load 'web-mode
-;;   '(progn
-;;      (add-hook 'web-mode-hook #'add-node-modules-path)))
 
 ;;; Advice
 ;; I'm not really sure what advice is
@@ -383,6 +401,9 @@
 (global-set-key (kbd "s-t") 'tab-bar-new-tab)
 (global-set-key (kbd "s-w") 'tab-bar-close-tab)
 (global-set-key (kbd "C-\\") 'tiling-cycle)
+
+;; Search
+(global-set-key (kbd "s-f") 'counsel-ag)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  UI ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -469,9 +490,18 @@
   (display-line-numbers-mode 0)
   (local-set-key (kbd "RET") 'clear-whitespace-and-newline-and-indent)
   (adaptive-wrap-prefix-mode)
+  (face-remap-add-relative 'markdown-header-face-1 :height 2.0)
+  (face-remap-add-relative 'markdown-header-face-2 :height 1.7)
+  (face-remap-add-relative 'markdown-header-face-3 :height 1.4)
+  (face-remap-add-relative 'markdown-header-face-4 :height 1.2)
+  (face-remap-add-relative 'markdown-header-face-5 :height 1.1)
+  (face-remap-add-relative 'markdown-header-face-6 :height 1.0)
   (define-key markdown-mode-map (kbd "C-c C-d") nil))
 
 (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
+
+;; End Markdown mode config
+
 
 ;; Defer custom loading if there's a daemon -- otherwise just load it.
 (defun load-custom (frame)
@@ -482,5 +512,10 @@
   (load-file "~/.emacs.d/custom.el"))
 
 (provide 'stephen)
+
+(load-file "~/.emacs.d/keybinds.el")
+
+;; Agent stuff
+(load-file "~/.emacs.d/emacs-agent.el")
 
 ;;; stephen.el ends here
