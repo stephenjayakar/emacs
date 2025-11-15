@@ -264,7 +264,7 @@
   :config
   ;; Set default model and API key for GPTEL
   (setq gptel-api-key openai-api-key
-        gptel-model 'gpt-4.1)
+        gptel-model 'claude-sonnet-4-5-20250929)
 
   ;; Add Anthropic Claude provider
   (gptel-make-anthropic "Claude"
