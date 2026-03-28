@@ -1,0 +1,3 @@
+[submodule "site-lisp/emacs-tmux-control-mode"]
+	path = site-lisp/emacs-tmux-control-mode
+	url = git@github.com:stephenjayakar/emacs-tmux-control-mode.git

@@ -1,6 +1,29 @@
 ;;; stephen.el --- Stephen's emacs config
 
-(require 'package)
+(eval-and-compile
+  (require 'package)
+  (package-initialize)
+  (require 'treesit nil t)
+  (require 'tramp nil t)
+  (require 'js nil t)
+  (require 'lsp-mode nil t)
+  (require 'lsp-ui nil t)
+  (require 'flycheck nil t)
+  (require 'markdown-mode nil t)
+  (require 'gptel nil t)
+  (when (listp byte-compile-warnings)
+    (setq byte-compile-warnings (delq 'obsolete byte-compile-warnings))))
+
+(require 'server)
+(require 'warnings)
+
+(defvar lsp-rust-server)
+(defvar lsp-auto-guess-root)
+(defvar lsp-ui-doc-enable)
+(defvar lsp-completion-mode)
+(defvar lsp-enable-file-watchers)
+
+(declare-function gptel-context-remove-all "ext:gptel")
 ;;; Code:
 
 (add-to-list
@@ -12,10 +35,15 @@
 
 (setq warning-minimum-level :error)
 
-;; (exec-path-from-shell-initialize)
-
 ;; setting emacs garbage collection threshold to a modern device level
 (setq gc-cons-threshold 100000000)
+
+;; Avoid transient native-comp cache write failures in batch smoke tests.
+(when noninteractive
+  (setq native-comp-jit-compilation nil))
+
+(unless (server-running-p)
+  (server-start))
 
 (load-file "~/.emacs.d/tiling.el")
 
@@ -70,7 +98,8 @@
 ;;;  PRIVATE KEYS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun read-api-key-from-file (filepath)
-  "Read the content of FILEPATH and return it as a string.  If the file does not exist, return an empty string."
+  "Read FILEPATH and return it as a string.
+If the file does not exist, return an empty string."
   (if (file-exists-p filepath)
       (with-temp-buffer
         (insert-file-contents-literally filepath)
@@ -88,7 +117,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package adaptive-wrap :ensure t)
 
-(use-package exec-path-from-shell :ensure t)
+(use-package
+ exec-path-from-shell
+ :ensure t
+ :config
+ (when (memq window-system '(mac ns x))
+   (exec-path-from-shell-initialize)))
 
 (use-package yasnippet :ensure t)
 
@@ -303,6 +337,43 @@
 
 (global-set-key (kbd "s-l") #'gptel-add-and-open-buffer)
 
+(defvar stephen-emacs-mcp-package "@keegancsmith/emacs-mcp-server"
+  "npm package name for the external Emacs MCP server.")
+
+(defun stephen-emacs-mcp-codex-config ()
+  "Return a Codex MCP config snippet for the Emacs MCP server."
+  (format
+   (concat "{\n"
+           "  \"mcpServers\": {\n"
+           "    \"emacs-mcp\": {\n"
+           "      \"command\": \"npx\",\n"
+           "      \"args\": [\"-y\", \"%s\"]\n"
+           "    }\n"
+           "  }\n"
+           "}\n")
+   stephen-emacs-mcp-package))
+
+(defun stephen-emacs-mcp-copy-codex-config ()
+  "Copy a Codex MCP config snippet for the Emacs MCP server to the kill ring."
+  (interactive)
+  (let ((snippet (stephen-emacs-mcp-codex-config)))
+    (kill-new snippet)
+    (message "Copied Codex MCP config for emacs-mcp to the kill ring")))
+
+(defun stephen-emacs-mcp-doctor ()
+  "Display basic readiness checks for the external Emacs MCP server."
+  (interactive)
+  (with-output-to-temp-buffer "*emacs-mcp-doctor*"
+    (princ (format "Emacs server running: %s\n"
+                   (if (server-running-p) "yes" "no")))
+    (princ (format "emacsclient found: %s\n"
+                   (or (executable-find "emacsclient") "no")))
+    (princ (format "npx found: %s\n"
+                   (or (executable-find "npx") "no")))
+    (princ (format "MCP package: %s\n" stephen-emacs-mcp-package))
+    (princ "\nCodex MCP config snippet:\n\n")
+    (princ (stephen-emacs-mcp-codex-config))))
+
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
 
@@ -466,10 +537,10 @@
 (defun clear-whitespace-and-newline-and-indent ()
   (interactive)
   (markdown-enter-key)
-  (previous-line)
+  (forward-line -1)
   (end-of-line)
   (delete-horizontal-space)
-  (next-line))
+  (forward-line 1))
 
 ;; TODO: Figure out if I can move the font configurations -> customize
 ;; Note: I moved the header scaling -> customize as well as the box
@@ -511,12 +582,27 @@
     (add-hook 'after-make-frame-functions #'load-custom)
   (load-file "~/.emacs.d/custom.el"))
 
+(defun stephen-open-config-on-startup ()
+  "Open `stephen.el' on interactive startup when no file was requested."
+  (when (and (not noninteractive)
+             (null command-line-args-left)
+             (equal (buffer-name (window-buffer (selected-window))) "*scratch*"))
+    (find-file "~/.emacs.d/stephen.el")))
+
+(add-hook 'emacs-startup-hook #'stephen-open-config-on-startup)
+
 (provide 'stephen)
 
 (load-file "~/.emacs.d/keybinds.el")
 
 ;; Agent stuff
 (load-file "~/.emacs.d/emacs-agent.el")
-(load-file "~/.emacs.d/tmux-cc.el")
+(add-to-list 'load-path
+             (expand-file-name "site-lisp/emacs-tmux-control-mode" user-emacs-directory))
+(setq tmux-cc-focus-next-key "C-<tab>"
+      tmux-cc-focus-prev-key "C-S-<tab>"
+      tmux-cc-focus-other-key "C-x o")
+(require 'tmux-cc)
+(tmux-cc-setup-keybindings)
 
 ;;; stephen.el ends here
