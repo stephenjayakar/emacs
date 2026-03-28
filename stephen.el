@@ -517,5 +517,6 @@
 
 ;; Agent stuff
 (load-file "~/.emacs.d/emacs-agent.el")
+(load-file "~/.emacs.d/tmux-cc.el")
 
 ;;; stephen.el ends here
