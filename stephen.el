@@ -601,7 +601,12 @@ If the file does not exist, return an empty string."
              (expand-file-name "site-lisp/emacs-tmux-control-mode" user-emacs-directory))
 (setq tmux-cc-focus-next-key "C-<tab>"
       tmux-cc-focus-prev-key "C-S-<tab>"
-      tmux-cc-focus-other-key "C-x o")
+      tmux-cc-focus-other-key "C-x o"
+      tmux-cc-manager-key "C-c w"
+      tmux-cc-split-horizontal-key "C-c |"
+      tmux-cc-split-vertical-key "C-c -"
+      tmux-cc-new-window-key "C-c C-n"
+      tmux-cc-new-session-key "C-c N")
 (require 'tmux-cc)
 (tmux-cc-setup-keybindings)
 
