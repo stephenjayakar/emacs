@@ -503,6 +503,13 @@ If the file does not exist, return an empty string."
 ;; Whitespace
 (setq-default show-trailing-whitespace t)
 
+(with-eval-after-load 'vterm
+  (add-hook 'vterm-mode-hook
+            (lambda ()
+              (setq-local show-trailing-whitespace nil)
+              (when (bound-and-true-p whitespace-mode)
+                (whitespace-mode -1)))))
+
 (defun proto-add-rpc (name)
   "Create a template for adding gRPC services and messages to .proto files"
   (interactive "sEnter the function name: ")
@@ -602,11 +609,16 @@ If the file does not exist, return an empty string."
 (setq tmux-cc-focus-next-key "C-<tab>"
       tmux-cc-focus-prev-key "C-S-<tab>"
       tmux-cc-focus-other-key "C-x o"
-      tmux-cc-manager-key "C-c w"
-      tmux-cc-split-horizontal-key "C-c |"
-      tmux-cc-split-vertical-key "C-c -"
-      tmux-cc-new-window-key "C-c C-n"
-      tmux-cc-new-session-key "C-c N")
+      tmux-cc-manager-key "C-t t"
+      tmux-cc-command-key "C-t !"
+      tmux-cc-kill-pane-key "C-t k"
+      tmux-cc-split-horizontal-key "C-t 3"
+      tmux-cc-split-vertical-key "C-t 2"
+      tmux-cc-new-window-key "C-t c"
+      tmux-cc-new-session-key "C-t S"
+      tmux-cc-switch-window-key "C-t w"
+      tmux-cc-switch-session-key "C-t s"
+      tmux-cc-detach-key "C-t d")
 (require 'tmux-cc)
 (tmux-cc-setup-keybindings)
 
