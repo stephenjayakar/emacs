@@ -620,6 +620,10 @@ If the file does not exist, return an empty string."
       tmux-cc-switch-session-key "C-t s"
       tmux-cc-detach-key "C-t d")
 (require 'tmux-cc)
+(bind-key (kbd "C-<tab>") #'tmux-cc-smart-next-window)
+(with-eval-after-load 'magit-status
+  (define-key magit-status-mode-map (kbd "C-<tab>") nil))
+(bind-key (kbd "C-S-<tab>") #'tmux-cc-smart-previous-window)
 (tmux-cc-setup-keybindings)
 
 ;;; stephen.el ends here
