@@ -379,6 +379,8 @@ If the file does not exist, return an empty string."
 
 ;; Configuring Built-in packages
 (setq js-indent-level 2)
+(with-eval-after-load 'dired
+  (add-hook 'dired-mode-hook #'dired-hide-details-mode))
 (add-hook 'python-mode-hook 'lsp)
 (add-hook
  'python-mode-hook (lambda () (local-unset-key (kbd "C-c C-d"))))
@@ -502,6 +504,13 @@ If the file does not exist, return an empty string."
 (setq-default c-basic-offset 2)
 ;; Whitespace
 (setq-default show-trailing-whitespace t)
+
+(with-eval-after-load 'term
+  (add-hook 'term-mode-hook
+            (lambda ()
+              (setq-local show-trailing-whitespace nil)
+              (when (bound-and-true-p whitespace-mode)
+                (whitespace-mode -1)))))
 
 (with-eval-after-load 'vterm
   (add-hook 'vterm-mode-hook

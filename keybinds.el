@@ -50,3 +50,7 @@ If the file is already visiting a buffer, update that buffer and save it."
 
 ;; Added on 2025-11-12 16:50
 (bind-key "s-g" 'gptel)
+;; Added on 2026-04-01 07:46
+(bind-key "C-c g s" #'magit-status)
+;; Added on 2026-04-03 07:59
+(bind-key "C-c t" #'tmux-cc-start)
