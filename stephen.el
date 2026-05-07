@@ -1,4 +1,8 @@
 ;;; stephen.el --- Stephen's emacs config
+(let ((default-directory (expand-file-name "site-lisp" user-emacs-directory)))
+  (add-to-list 'load-path default-directory)
+  (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
+      (normal-top-level-add-subdirs-to-load-path)))
 
 (eval-and-compile
   (require 'package)
@@ -628,7 +632,7 @@ If the file does not exist, return an empty string."
       tmux-cc-switch-window-key "C-t w"
       tmux-cc-switch-session-key "C-t s"
       tmux-cc-detach-key "C-t d")
-(require 'tmux-cc)
+(load (expand-file-name "tmux-cc" user-emacs-directory))
 (bind-key (kbd "C-<tab>") #'tmux-cc-smart-next-window)
 (with-eval-after-load 'magit-status
   (define-key magit-status-mode-map (kbd "C-<tab>") nil))
