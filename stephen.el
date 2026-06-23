@@ -119,6 +119,10 @@ If the file does not exist, return an empty string."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  PACKAGES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package vertico
+  :init
+  (vertico-mode))
+
 (use-package adaptive-wrap :ensure t)
 
 (use-package
@@ -226,15 +230,6 @@ If the file does not exist, return an empty string."
 
 (use-package lsp-ui :ensure t :commands lsp-ui-mode)
 
-(use-package counsel :ensure t)
-
-(use-package selectrum :ensure t :config (selectrum-mode +1))
-
-(use-package
- selectrum-prescient
- :ensure t
- :config (selectrum-prescient-mode +1))
-
 (use-package
  undo-tree
  :ensure t
@@ -260,6 +255,11 @@ If the file does not exist, return an empty string."
 (use-package fzf :ensure t :bind (("C-x f" . fzf-git)))
 
 (use-package material-theme :ensure t)
+
+(use-package
+ beacon
+ :ensure t
+ :config (beacon-mode 1))
 
 (use-package
  ace-jump-mode
@@ -522,34 +522,6 @@ If the file does not exist, return an empty string."
               (setq-local show-trailing-whitespace nil)
               (when (bound-and-true-p whitespace-mode)
                 (whitespace-mode -1)))))
-
-(defun proto-add-rpc (name)
-  "Create a template for adding gRPC services and messages to .proto files"
-  (interactive "sEnter the function name: ")
-  (insert
-   (format "%s %s(%sRequest) returns (%sResponse);\n"
-           "rpc"
-           name
-           name
-           name))
-  (goto-char (point-max))
-  (newline)
-  (insert (format "message %sRequest {}\n" name))
-  (insert (format "message %sResponse {}\n" name)))
-
-(defun proto-renumber ()
-  "Renumber selected protobuf fields in ascending order."
-  (interactive)
-  (if (use-region-p)
-      (let ((counter 1))
-        (save-excursion
-          (narrow-to-region (region-beginning) (region-end))
-          (goto-char (point-min))
-          (while (re-search-forward "= \\([0-9]+\\);" nil t)
-            (replace-match (format "= %d;" counter) nil nil)
-            (setq counter (1+ counter))))
-        (widen))
-    (message "You must select a region first!")))
 
 ;; MARKDOWN mode configuration -- I want this to look similar to Notion
 (setq-default markdown-fontify-code-blocks-natively t)
